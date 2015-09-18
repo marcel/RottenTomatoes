@@ -61,6 +61,7 @@ class MoviesViewController: UIViewController,
   var shouldSimulateRefresh = false
 
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var tabBar: UITabBar!
 
   // MARK: - View Life Cycle
 
@@ -68,6 +69,7 @@ class MoviesViewController: UIViewController,
     super.viewDidLoad()
     prepareRefreshControl()
     prepareSearchController()
+    prepareTabBar()
     presentLoadingProgress()
 
     client    = RottenTomatoesClient()
@@ -121,6 +123,10 @@ class MoviesViewController: UIViewController,
         }, completion: { _ in () })
 
     }
+  }
+
+  func prepareTabBar() {
+    tabBar.selectedItem = tabBar.items![0]
   }
 
   // MARK: - UITableViewDataSource

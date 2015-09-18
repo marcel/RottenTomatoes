@@ -15,6 +15,7 @@ class MoviesDetailViewController: UIViewController {
   @IBOutlet weak var synopsisText: UITextView!
   @IBOutlet weak var textContainerView: UIView!
   @IBOutlet weak var dragHandle: UILabel!
+  @IBOutlet weak var mpaaRatingLabel: UILabel!
 
   var movie: Movie!
 
@@ -26,6 +27,7 @@ class MoviesDetailViewController: UIViewController {
     titleLabel.text   = movie.title
     synopsisText.text = movie.synopsis
     imageView.setImageWithURL(movie.posterImageUrl)
+    mpaaRatingLabel.text = movie.mpaaRating
     minTextContainerViewY = textContainerView.frame.origin.y
   }
 

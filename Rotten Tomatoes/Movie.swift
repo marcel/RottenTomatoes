@@ -18,6 +18,8 @@ class Movie {
   var posterImage: UIImage?
   let posterImageThumbnailUrl: NSURL
 
+  let mpaaRating: String
+
   convenience init(data: NSDictionary) {
     let title    = data["title"] as! String
     let synopsis = data["synopsis"] as! String
@@ -25,12 +27,15 @@ class Movie {
     let lowResUrl  = data.valueForKeyPath("posters.thumbnail") as! String
     let highResUrl = Movie.convertPostertPostImageUrlToHighResVersion(lowResUrl)
 
+    let mpaaRating = data["mpaa_rating"] as! String
+
     self.init(
       data: data,
       title: title,
       synopsis: synopsis,
       posterImageUrl: (NSURL(string: highResUrl)!),
-      posterImageThumbnailUrl: (NSURL(string: lowResUrl)!)
+      posterImageThumbnailUrl: (NSURL(string: lowResUrl)!),
+      mpaaRating: mpaaRating
     )
   }
 
@@ -39,13 +44,15 @@ class Movie {
     title: String,
     synopsis: String,
     posterImageUrl: NSURL,
-    posterImageThumbnailUrl: NSURL
+    posterImageThumbnailUrl: NSURL,
+    mpaaRating: String
   ) {
     self.data           = data
     self.title          = title
     self.synopsis       = synopsis
     self.posterImageUrl = posterImageUrl
     self.posterImageThumbnailUrl = posterImageThumbnailUrl
+    self.mpaaRating = mpaaRating
   }
 
   static func convertPostertPostImageUrlToHighResVersion(url: String) -> String {
