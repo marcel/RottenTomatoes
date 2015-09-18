@@ -12,32 +12,49 @@ class MoviesDetailViewController: UIViewController {
 
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var synopsisLabel: UILabel!
+  @IBOutlet weak var synopsisText: UITextView!
+  @IBOutlet weak var textContainerView: UIView!
+  @IBOutlet weak var dragHandle: UILabel!
 
   var movie: Movie!
-  
+
+  var minTextContainerViewY: CGFloat!
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    titleLabel.text = movie.title
-    synopsisLabel.text = movie.synopsis
+    titleLabel.text   = movie.title
+    synopsisText.text = movie.synopsis
     imageView.setImageWithURL(movie.posterImageUrl)
+    minTextContainerViewY = textContainerView.frame.origin.y
   }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+  func max(lhs: CGFloat, _ rhs: CGFloat) -> CGFloat {
+    return lhs > rhs ? lhs : rhs
+  }
+
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+  }
     
+  @IBAction func handlePan(recognizer: UIPanGestureRecognizer) {
+    let translation = recognizer.translationInView(view)
 
-    /*
-    // MARK: - Navigation
+    let maxY = minTextContainerViewY + textContainerView.frame.height - dragHandle.frame.height
+    let yAfterTranslation = textContainerView.frame.origin.y + translation.y
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    if yAfterTranslation <= maxY && yAfterTranslation >= minTextContainerViewY {
+      UIView.animateWithDuration(
+        0.5,
+        delay: 0,
+        usingSpringWithDamping: 0.9,
+        initialSpringVelocity: 1,
+        options: [],
+        animations: {
+          self.textContainerView.frame = CGRectOffset(self.textContainerView.frame, 0, translation.y)
+          recognizer.setTranslation(CGPointZero, inView: self.view)
+        }, completion: { b in () }
+      )
     }
-    */
-
+  }
 }
