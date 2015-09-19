@@ -9,6 +9,19 @@
 import Foundation
 
 class Movie {
+  struct Rating {
+    enum Rating: String {
+      case Rotten = "Rotten"
+      case Fresh  = "Fresh"
+      case CertifiedFresh = "Certified Fresh"
+      case Upright = "Upright"
+      case Spilled = "Spilled"
+    }
+
+    let rating: Rating
+    let score: Int
+  }
+
   let data: NSDictionary
 
   let title: String
@@ -19,6 +32,8 @@ class Movie {
   let posterImageThumbnailUrl: NSURL
 
   let mpaaRating: String
+//  let audienceRating: Rating
+//  let criticRating: Rating
 
   convenience init(data: NSDictionary) {
     let title    = data["title"] as! String
@@ -28,6 +43,7 @@ class Movie {
     let highResUrl = Movie.convertPostertPostImageUrlToHighResVersion(lowResUrl)
 
     let mpaaRating = data["mpaa_rating"] as! String
+//    let audienceRating = Rating(rating: Rating.Rating.fromRaw(data["]
 
     self.init(
       data: data,

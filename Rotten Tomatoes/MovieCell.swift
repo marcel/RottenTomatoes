@@ -48,7 +48,7 @@ class MovieCell: UITableViewCell {
   func loadPosterImage(movie: Movie, onCompletion: (() -> ())?) {
     let lowResRequest  = RequestFactory.mkRequest(movie.posterImageThumbnailUrl)
     let highResRequest = RequestFactory.mkRequest(movie.posterImageUrl)
-    
+    print(movie.posterImageUrl)
     self.posterView.setImageWithURLRequest(lowResRequest,
       placeholderImage: nil,
       success: { (request, response, image) in

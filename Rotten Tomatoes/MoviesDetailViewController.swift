@@ -10,6 +10,7 @@ import UIKit
 
 class MoviesDetailViewController: UIViewController {
 
+  @IBOutlet weak var navigationBarTitle: UINavigationItem!
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var synopsisText: UITextView!
@@ -20,14 +21,26 @@ class MoviesDetailViewController: UIViewController {
   var movie: Movie!
 
   var minTextContainerViewY: CGFloat!
+  var maxTextContainerViewY: CGFloat! {
+    return minTextContainerViewY +
+      textContainerView.frame.height -
+      dragHandle.frame.height
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    titleLabel.text   = movie.title
-    synopsisText.text = movie.synopsis
-    imageView.setImageWithURL(movie.posterImageUrl)
+    navigationBarTitle.title = movie.title
+
+    titleLabel.text      = movie.title
+    synopsisText.text    = movie.synopsis
     mpaaRatingLabel.text = movie.mpaaRating
+    if let posterImage = movie.posterImage {
+      imageView.image = posterImage
+    } else {
+      imageView.setImageWithURL(movie.posterImageUrl)
+    }
+
     minTextContainerViewY = textContainerView.frame.origin.y
   }
 
@@ -39,13 +52,37 @@ class MoviesDetailViewController: UIViewController {
     super.didReceiveMemoryWarning()
   }
     
+  @IBAction func toggleText(sender: AnyObject) {
+    let containerFrame        = textContainerView.frame
+    let textContainerMidpoint = minTextContainerViewY + (containerFrame.height / 2)
+
+    UIView.easeIn({
+      // It's below the half way point so toggle up
+      if containerFrame.origin.y > textContainerMidpoint {
+        self.textContainerView.frame = CGRectOffset(
+          containerFrame,
+          0,
+          -(containerFrame.origin.y - self.minTextContainerViewY)
+        )
+        self.navigationController?.navigationBar.alpha = 1
+      // It's above the half way point so toggle down
+      } else {
+        self.textContainerView.frame = CGRectOffset(
+          containerFrame,
+          0,
+          +(self.maxTextContainerViewY - containerFrame.origin.y)
+        )
+        self.navigationController?.navigationBar.alpha = 0
+      }
+    })
+  }
+
   @IBAction func handlePan(recognizer: UIPanGestureRecognizer) {
     let translation = recognizer.translationInView(view)
 
-    let maxY = minTextContainerViewY + textContainerView.frame.height - dragHandle.frame.height
     let yAfterTranslation = textContainerView.frame.origin.y + translation.y
 
-    if yAfterTranslation <= maxY && yAfterTranslation >= minTextContainerViewY {
+    if yAfterTranslation <= maxTextContainerViewY && yAfterTranslation >= minTextContainerViewY {
       UIView.animateWithDuration(
         0.5,
         delay: 0,

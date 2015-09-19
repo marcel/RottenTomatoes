@@ -7,61 +7,41 @@
 //
 
 import UIKit
+import SystemConfiguration
 
 class MoviesViewController: UIViewController,
   UITableViewDataSource, UITableViewDelegate,
   UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate,
   UITabBarDelegate {
-  typealias Callback = () -> ()
-  typealias SearchQuery = [String]
+
+  enum Segue: String {
+    case MoviesDetail
+    case DropDownAlert
+    case ListViewToGridView
+  }
 
   // MARK: - Properties
 
-  var movies: [Movie] {
-    get {
-      return _movies[urlToLoad].map { movies in
-        searchQuery.map { queries in
-          moviesMatchingSearchQuery(movies, searchQuery: queries)
-        } ?? movies
-      } ?? []
-    }
-
-    set {
-      // TODO Succeptible to race condition if tab is changed before request is completed
-      _movies[urlToLoad] = newValue
-    }
-  }
-
-  private var _movies: [RottenTomatoesClient.ApiUrl: [Movie]]! = Dictionary<RottenTomatoesClient.ApiUrl, [Movie]>()
-
-  var urlToLoad: RottenTomatoesClient.ApiUrl!
   let apiUrls = [
     RottenTomatoesClient.ApiUrl.BoxOffice, RottenTomatoesClient.ApiUrl.DVD
   ]
 
-  var client: RottenTomatoesClient {
-    get {
-      if shouldSimulateRefresh {
-        return RefreshSimulatingRottenTomatoesClient(_client)
-      } else {
-        return _client
-      }
-    }
-
-    set {
-      _client = newValue
-    }
-  }
-
-  private var _client: RottenTomatoesClient!
-
+  var movieRepository: MovieRepository!
   var searchController: UISearchController!
   var refreshControl: UIRefreshControl!
-  var searchQuery: SearchQuery?
-  var shouldSimulateRefresh = false
+
+  // MARK: - Outlets
 
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var tabBar: UITabBar!
+  @IBOutlet weak var layoutSwitcherControl: UISegmentedControl!
+
+  // MARK: - Actions
+
+  @IBAction func switchLayout(sender: AnyObject) {
+    print("switchLayout")
+    performSegueWithIdentifier(Segue.ListViewToGridView.rawValue, sender: self)
+  }
 
   // MARK: - View Life Cycle
 
@@ -72,14 +52,20 @@ class MoviesViewController: UIViewController,
     prepareTabBar()
     presentLoadingProgress()
 
-    client    = RottenTomatoesClient()
-    urlToLoad = RottenTomatoesClient.ApiUrl.BoxOffice
+    movieRepository = MovieRepository()
+    movieRepository.urlToLoad = urlForSelectedTabBar()
 
     tableView.dataSource = self
     tableView.delegate   = self
 
-    loadMovies() {
-      KVNProgress.performSelectorOnMainThread("dismiss", withObject: nil, waitUntilDone: false)
+    print("Network reachable? \(NetworkReachability.isConnectedToNetwork())")
+    if NetworkReachability.isConnectedToNetwork() {
+      movieRepository.loadMovies() {
+        self.dismissLoadingProgress()
+        self.reloadTable()
+      }
+    } else {
+      KVNProgress.showErrorWithStatus("No Network")
     }
   }
 
@@ -91,19 +77,23 @@ class MoviesViewController: UIViewController,
     )
   }
 
-  func loadMovies(onCompletion: Callback? = nil) {
-    client.load(urlToLoad) { movies in
-      self.movies = movies ?? []
-      self.reloadTable()
-      onCompletion?()
-    }
-  }
-
   func presentLoadingProgress() {
     let config = KVNProgressConfiguration.defaultConfiguration()
     config.fullScreen = true
+    config.minimumErrorDisplayTime = 3
+
     KVNProgress.setConfiguration(config)
-    KVNProgress.showWithStatus("Loading...")
+    KVNProgress.performSelectorOnMainThread("showWithStatus:",
+      withObject: "Loading...",
+      waitUntilDone: false
+    )
+  }
+
+  func dismissLoadingProgress() {
+    KVNProgress.performSelectorOnMainThread("dismiss",
+      withObject: nil,
+      waitUntilDone: false
+    )
   }
 
   override func didReceiveMemoryWarning() {
@@ -113,15 +103,26 @@ class MoviesViewController: UIViewController,
 
   // MARK: - UITabBar
 
-  func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-    let urlBeforeTabSelection = urlToLoad
-    urlToLoad = apiUrls[tabBar.items!.indexOf(item)!]
-    if urlBeforeTabSelection != urlToLoad {
-      print("Switching to \(urlToLoad)")
-      UIView.animateWithDuration(2.0, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-        self.loadMovies()
-        }, completion: { _ in () })
+  func urlForSelectedTabBar() -> RottenTomatoesClient.ApiUrl {
+    return apiUrls[tabBar.items!.indexOf(tabBar.selectedItem!)!]
+  }
 
+  func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+    let urlBeforeTabSelection = movieRepository.urlToLoad
+    movieRepository.urlToLoad = urlForSelectedTabBar()
+    if urlBeforeTabSelection != movieRepository.urlToLoad {
+      print("Switching to \(movieRepository.urlToLoad)")
+
+      if !movieRepository.hasLoadedUrl() {
+        presentLoadingProgress()
+      }
+
+      UIView.easeIn({
+        self.movieRepository.loadMovies() {
+          self.reloadTable()
+          self.dismissLoadingProgress()
+        }
+      })
     }
   }
 
@@ -132,17 +133,16 @@ class MoviesViewController: UIViewController,
   // MARK: - UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return movies.count
+    return movieRepository.movies.count
   }
 
   // TODO This could cause an index out of bounds error if something wonky
   // happens
   func movieAtIndexPath(indexPath: NSIndexPath) -> Movie {
-    return movies[indexPath.row]
+    return movieRepository.movies[indexPath.row]
   }
 
   func cellAtIndexPath(indexPath: NSIndexPath) -> MovieCell {
-    print("called cellAtIndexPath")
     let cell = tableView.dequeueReusableCellWithIdentifier(
       MovieCell.identifier,
       forIndexPath: indexPath
@@ -152,47 +152,27 @@ class MoviesViewController: UIViewController,
   }
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    print("calling from tableView:cellForRowAtIndexPath")
     let cell  = cellAtIndexPath(indexPath)
-    let movie = movieAtIndexPath(indexPath)
+    let movie = movieAtIndexPath(indexPath) // TODO Figure out how not need to call this twice
 
     return cell.populatedFromMovie(movie) {
-      UIView.animateWithDuration(2.0,
-        delay: 0.0,
-        options: UIViewAnimationOptions.CurveEaseIn,
-        animations: {
-          // Guard against race conditions
-          if let _ = self.tableView.cellForRowAtIndexPath(indexPath) {
-            self.tableView.reloadRowsAtIndexPaths(
-              [indexPath],
-              withRowAnimation: UITableViewRowAnimation.Fade
-            )
-          } else {
-            print("NOPE: cell for row \(indexPath.row) gone") // TODO Figure out why this happens
-          }
-        },
-        completion: { _ in () }
-      )
+      UIView.easeIn({
+        // Guard against race conditions
+        if let _ = self.tableView.cellForRowAtIndexPath(indexPath) {
+          self.tableView.reloadRowsAtIndexPaths(
+            [indexPath],
+            withRowAnimation: UITableViewRowAnimation.Fade
+          )
+        } else {
+          print("Cell for row \(indexPath.row) is gone") // TODO Figure out why this happens
+        }
+      })
       print("Hi-res image is loaded in row \(indexPath.row) for '\(movie.title)'")
     }
   }
 
-  func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-    print("TRACE: didEndDisplayingCell \(indexPath.row)")
-  }
-
-  func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-    print("TRACE: willDisplayCell \(indexPath.row)")
-  }
-
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     tableView.deselectRowAtIndexPath(indexPath, animated: false)
-  }
-
-  func tableView(tableView: UITableView, didHighlightRowAtIndexPath indexPath: NSIndexPath) {
-    // let cell = cellAtIndexPath(indexPath)
-
-    // TODO Do something here
   }
 
   // MARK: - UISearchResultsUpdating
@@ -204,31 +184,32 @@ class MoviesViewController: UIViewController,
     print("Search query: '\(enteredText)'")
 
     if strippedString.isEmpty {
-      searchQuery = nil
+      movieRepository.searchQuery = nil
     } else {
-      searchQuery = strippedString.componentsSeparatedByString(" ") as [String]
+      movieRepository.searchQuery = strippedString.componentsSeparatedByString(" ") as [String]
     }
 
     reloadTable()
   }
 
-  func moviesMatchingSearchQuery(movies: [Movie], searchQuery: SearchQuery) -> [Movie] {
-    return movies.filter { movie in
-      let movieText = [movie.title, movie.synopsis]
-
-      return searchQuery.any { query in
-        movieText.any { text in
-          text.localizedCaseInsensitiveContainsString(query)
-        }
-      }
-    }
-  }
-
   // MARK: - Navigation
 
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    let cell = sender as! UITableViewCell
+    switch segue.identifier! {
 
+    case Segue.MoviesDetail.rawValue:
+      prepareMoviesDetailSegue(segue, cell: sender as! UITableViewCell)
+    case Segue.DropDownAlert.rawValue:
+      prepareDropDownAlertSegue(segue)
+    case Segue.ListViewToGridView.rawValue:
+      prepareLayoutSwitchSegue(segue)
+      print("Going from list view to grid view")
+    default:
+      ()
+    }
+  }
+
+  func prepareMoviesDetailSegue(segue: UIStoryboardSegue, cell: UITableViewCell) {
     let indexPath = tableView.indexPathForCell(cell)!
     let movie     = movieAtIndexPath(indexPath)
 
@@ -236,6 +217,18 @@ class MoviesViewController: UIViewController,
     movieDetailsViewController.movie = movie
 
     cleanUpViewBeforeSegue()
+  }
+
+  func prepareDropDownAlertSegue(segue: UIStoryboardSegue) {
+    let dropDownAlertController = segue.destinationViewController as! DropDownAlertViewController
+    let dropDownAlertView = dropDownAlertController.view as! DropDownAlertView
+
+    dropDownAlertView.messageLabel.text = "Network is Unreachable"
+  }
+
+  func prepareLayoutSwitchSegue(segue: UIStoryboardSegue) {
+    let gridViewController = segue.destinationViewController as! MoviesGridViewController
+    gridViewController.movieRepository = movieRepository
   }
 
   func cleanUpViewBeforeSegue() {
@@ -288,16 +281,21 @@ class MoviesViewController: UIViewController,
   }
 
   func onRefresh() {
-    simulatingRefresh {
-      self.loadMovies() {
+    movieRepository.simulatingNewResults() {
+      if NetworkReachability.isConnectedToNetwork() {
+        UIView.easeIn({
+          self.movieRepository.loadMovies() {
+            self.reloadTable()
+            self.refreshControl.endRefreshing()
+          }
+        })
+      } else {
         self.refreshControl.endRefreshing()
+        self.performSegueWithIdentifier(
+          Segue.DropDownAlert.rawValue,
+          sender: self
+        )
       }
     }
-  }
-
-  func simulatingRefresh(callback: Callback) {
-    shouldSimulateRefresh = true
-    callback()
-    shouldSimulateRefresh = false
   }
 }
