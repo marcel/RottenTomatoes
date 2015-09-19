@@ -1,0 +1,2 @@
+- It wasn't clear which operations had to be explicitly performed in the main thread and which didn't. Not performing some on the main thread resulted in strange UI races. Is there an objective function on when it is necessary and when it isn't?
+

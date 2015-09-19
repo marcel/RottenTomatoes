@@ -35,11 +35,9 @@ class MoviesDetailViewController: UIViewController {
     titleLabel.text      = movie.title
     synopsisText.text    = movie.synopsis
     mpaaRatingLabel.text = movie.mpaaRating
-    if let posterImage = movie.posterImage {
-      imageView.image = posterImage
-    } else {
-      imageView.setImageWithURL(movie.posterImageUrl)
-    }
+
+    print("detail view: loading image into view: \(movie.posterImage)")
+    movie.loadPosterImageIntoView(imageView)
 
     minTextContainerViewY = textContainerView.frame.origin.y
   }
@@ -51,7 +49,7 @@ class MoviesDetailViewController: UIViewController {
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
   }
-    
+
   @IBAction func toggleText(sender: AnyObject) {
     let containerFrame        = textContainerView.frame
     let textContainerMidpoint = minTextContainerViewY + (containerFrame.height / 2)

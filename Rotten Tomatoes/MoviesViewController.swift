@@ -148,27 +148,13 @@ class MoviesViewController: UIViewController,
       forIndexPath: indexPath
     ) as! MovieCell
 
-    return cell.populatedFromMovie(movieAtIndexPath(indexPath))
+    return cell
   }
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell  = cellAtIndexPath(indexPath)
     let movie = movieAtIndexPath(indexPath) // TODO Figure out how not need to call this twice
-
-    return cell.populatedFromMovie(movie) {
-      UIView.easeIn({
-        // Guard against race conditions
-        if let _ = self.tableView.cellForRowAtIndexPath(indexPath) {
-          self.tableView.reloadRowsAtIndexPaths(
-            [indexPath],
-            withRowAnimation: UITableViewRowAnimation.Fade
-          )
-        } else {
-          print("Cell for row \(indexPath.row) is gone") // TODO Figure out why this happens
-        }
-      })
-      print("Hi-res image is loaded in row \(indexPath.row) for '\(movie.title)'")
-    }
+    return cell.populatedFromMovie(movie)
   }
 
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

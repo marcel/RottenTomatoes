@@ -28,46 +28,14 @@ class MovieCell: UITableViewCell {
     print("Preparing for reuse: \(titleLabel.text), \(posterView.image)")
   }
 
-  func populatedFromMovie(movie: Movie, onCompletion: (() -> ())? = nil) -> MovieCell {
+  func populatedFromMovie(movie: Movie) -> MovieCell {
+    print("populatedFromMovie: '\(movie.title)'")
+
     titleLabel.text    = movie.title
     synopsisLabel.text = movie.synopsis
-    print("populatedFromMovie: '\(movie.title)'")
-    
-    if let posterImage = movie.posterImage {
-      print("Image already set: '\(movie.title)'")
-      posterView.image = posterImage
-      onCompletion?()
-    } else {
-      print("Loading image for '\(movie.title)'...")
-      loadPosterImage(movie, onCompletion: onCompletion)
-    }
-
+    print("About to load image: '\(movie.title)'")
+    movie.loadPosterImageIntoView(posterView)
+    print("Image loading started: '\(movie.title)'")
     return self
-  }
-
-  func loadPosterImage(movie: Movie, onCompletion: (() -> ())?) {
-    let lowResRequest  = RequestFactory.mkRequest(movie.posterImageThumbnailUrl)
-    let highResRequest = RequestFactory.mkRequest(movie.posterImageUrl)
-    print(movie.posterImageUrl)
-    self.posterView.setImageWithURLRequest(lowResRequest,
-      placeholderImage: nil,
-      success: { (request, response, image) in
-        print("Success (lo-res): '\(movie.title)'")
-        self.posterView.setImageWithURLRequest(highResRequest,
-          placeholderImage: image,
-          success: { (request, response, image) in
-            movie.posterImage = image
-            print("Success (hi-res): '\(movie.title)'")
-            onCompletion?()
-          },
-          failure: { (request, response, _) in
-            movie.posterImage = nil
-            print("Failure (hi-res): '\(movie.title)'")
-        })
-      },
-      failure: { (request, response, _) in
-        print("Failure (lo-res): '\(movie.title)'")
-      }
-    )
   }
 }
