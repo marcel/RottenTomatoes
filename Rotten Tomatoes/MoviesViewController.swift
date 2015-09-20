@@ -163,6 +163,7 @@ class MoviesViewController: UIViewController,
   func movieAtIndexPath(indexPath: NSIndexPath) -> Movie {
     return movieRepository.movies[indexPath.row]
   }
+ 
 
   func cellAtIndexPath(indexPath: NSIndexPath) -> MovieCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(
@@ -175,7 +176,7 @@ class MoviesViewController: UIViewController,
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell  = cellAtIndexPath(indexPath)
-    let movie = movieAtIndexPath(indexPath) // TODO Figure out how not need to call this twice
+    let movie = movieAtIndexPath(indexPath)
     return cell.populatedFromMovie(movie)
   }
 
