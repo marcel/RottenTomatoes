@@ -163,7 +163,7 @@ class MoviesViewController: UIViewController,
   func movieAtIndexPath(indexPath: NSIndexPath) -> Movie {
     return movieRepository.movies[indexPath.row]
   }
- 
+
 
   func cellAtIndexPath(indexPath: NSIndexPath) -> MovieCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(
