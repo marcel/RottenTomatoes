@@ -14,19 +14,21 @@ extension UIView {
   }
 
   class func animate(
-    duration: NSTimeInterval,
-    options: UIViewAnimationOptions,
     animations: () -> (),
-    completion: (Bool -> ())?
+    options: UIViewAnimationOptions = [],
+    duration: NSTimeInterval = defaultAnimationDuration,
+    completion: (Bool -> ())? = nil
   ) {
-    UIView.animateWithDuration(duration,
-      delay: 0,
-      usingSpringWithDamping: 0.75,
-      initialSpringVelocity: 0.75,
-      options: options,
-      animations: animations,
-      completion: completion
-    )
+    dispatch_async(dispatch_get_main_queue()) {
+      UIView.animateWithDuration(duration,
+        delay: 0,
+        usingSpringWithDamping: 0.75,
+        initialSpringVelocity: 0.75,
+        options: options,
+        animations: animations,
+        completion: completion
+      )
+    }
   }
 
   class func easeIn(
@@ -34,7 +36,7 @@ extension UIView {
     duration: NSTimeInterval = defaultAnimationDuration,
     completion: (Bool -> ())? = nil
   ) {
-    animate(duration, options: .CurveEaseIn, animations: animations, completion: completion)
+    animate(animations, options: .CurveEaseIn, duration: duration,  completion: completion)
   }
 
   class func easeOut(
@@ -42,6 +44,6 @@ extension UIView {
     duration: NSTimeInterval = defaultAnimationDuration,
     completion: (Bool -> ())? = nil
   ) {
-    animate(duration, options: .CurveEaseOut, animations: animations, completion: completion)
+    animate(animations, options: .CurveEaseOut, duration: duration, completion: completion)
   }
 }
