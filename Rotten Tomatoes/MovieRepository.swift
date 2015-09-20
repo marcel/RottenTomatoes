@@ -55,18 +55,24 @@ class MovieRepository {
   }
 
   func loadMovies(onCompletion: Callback? = nil) {
-    client.load(urlToLoad) { movies in
-      self.movies = movies ?? []
+    if hasLoadedUrl() {
       onCompletion?()
+    } else {
+      client.load(urlToLoad) { movies in
+        self.movies = movies ?? []
+        onCompletion?()
+      }
     }
   }
 
   func hasLoadedUrl() -> Bool {
+    print("_movies[urlToLoad]: ", _movies[urlToLoad])
     return _movies[urlToLoad] != nil
   }
 
   func simulatingNewResults(callback: Callback) {
     shouldSimulateRefresh = true
+    _movies.removeValueForKey(urlToLoad)
     callback()
     shouldSimulateRefresh = false
   }
