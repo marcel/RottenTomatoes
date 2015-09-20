@@ -50,6 +50,7 @@ class MoviesViewController: UIViewController,
     prepareRefreshControl()
     prepareSearchController()
     prepareTabBar()
+    prepareLoadingProgress()
     presentLoadingProgress()
 
     movieRepository = MovieRepository()
@@ -77,12 +78,16 @@ class MoviesViewController: UIViewController,
     )
   }
 
-  func presentLoadingProgress() {
+  func prepareLoadingProgress() {
     let config = KVNProgressConfiguration.defaultConfiguration()
     config.fullScreen = true
     config.minimumErrorDisplayTime = 3
+    config.minimumDisplayTime = 1
 
     KVNProgress.setConfiguration(config)
+  }
+
+  func presentLoadingProgress() {
     KVNProgress.performSelectorOnMainThread("showWithStatus:",
       withObject: "Loading...",
       waitUntilDone: false
@@ -114,7 +119,9 @@ class MoviesViewController: UIViewController,
     if urlBeforeTabSelection != movieRepository.urlToLoad {
       print("Switching to \(movieRepository.urlToLoad)")
 
-      if !movieRepository.hasLoadedUrl() {
+      let isFirstTimeLoadingTab = !movieRepository.hasLoadedUrl()
+
+      if isFirstTimeLoadingTab {
         presentLoadingProgress()
       }
 
@@ -125,14 +132,18 @@ class MoviesViewController: UIViewController,
         UIViewAnimationOptions.TransitionFlipFromRight
 
       movieRepository.loadMovies() {
-        UIView.transitionWithView(
-          self.tableView,
-          duration: 0.5,
-          options: [animationDirection, .AllowAnimatedContent],
-          animations: { self.reloadTable() },
-          completion: nil
-        )
-        self.dismissLoadingProgress()
+        if isFirstTimeLoadingTab {
+          self.dismissLoadingProgress()
+          self.reloadTable()
+        } else {
+          UIView.transitionWithView(
+            self.tableView,
+            duration: 0.5,
+            options: [animationDirection, .AllowAnimatedContent],
+            animations: { self.reloadTable() },
+            completion: nil
+          )
+        }
       }
     }
   }

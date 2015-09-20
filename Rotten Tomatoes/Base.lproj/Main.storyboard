@@ -148,47 +148,80 @@
                                             <outletCollection property="gestureRecognizers" destination="rtj-I5-DQv" appends="YES" id="zne-f2-FqG"/>
                                         </connections>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PG-13" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7vR-yE-Wcv">
-                                        <rect key="frame" x="13" y="61" width="40" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <animations/>
-                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="14"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" id="qTg-qf-5GZ" userLabel="Ratings">
-                                        <rect key="frame" x="61" y="59" width="100" height="23"/>
+                                    <view contentMode="scaleToFill" id="EJD-NI-SEl" userLabel="Info">
+                                        <rect key="frame" x="8" y="69" width="206" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rotten-16.png" id="TDQ-RG-lAQ" userLabel="Critic Rating">
-                                                <rect key="frame" x="0.0" y="3" width="16" height="16"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                            <view opaque="NO" contentMode="scaleToFill" id="4Lh-WI-b7O" userLabel="Ratings">
+                                                <rect key="frame" x="6" y="0.0" width="85" height="23"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" id="D5i-tu-03s" userLabel="Critics Rating" customClass="RatingView" customModule="Rotten_Tomatoes" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="1" width="47" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fresh-16.png" id="IBs-um-kxw" userLabel="Rating Image">
+                                                                <rect key="frame" x="0.0" y="3" width="16" height="16"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                                <animations/>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="72%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2dI-O6-GYL" userLabel="Score">
+                                                                <rect key="frame" x="20" y="0.0" width="30" height="21"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <animations/>
+                                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="10"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <outlet property="ratingImage" destination="IBs-um-kxw" id="qWh-uc-ncT"/>
+                                                            <outlet property="score" destination="s0o-D4-x3o" id="C6e-9s-8St"/>
+                                                        </connections>
+                                                    </view>
+                                                    <view contentMode="scaleToFill" id="aLI-UC-dfn" userLabel="Audience Rating" customClass="RatingView" customModule="Rotten_Tomatoes" customModuleProvider="target">
+                                                        <rect key="frame" x="43" y="1" width="42" height="22"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="72%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="s0o-D4-x3o" userLabel="Score">
+                                                                <rect key="frame" x="20" y="0.0" width="30" height="21"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <animations/>
+                                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="10"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Spilled-16.png" id="Yow-tL-58U" userLabel="Rating Image">
+                                                                <rect key="frame" x="0.0" y="3" width="16" height="16"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                                <animations/>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <connections>
+                                                            <outlet property="ratingImage" destination="Yow-tL-58U" id="7pi-y2-NR7"/>
+                                                            <outlet property="score" destination="2dI-O6-GYL" id="B0v-eF-998"/>
+                                                        </connections>
+                                                    </view>
+                                                </subviews>
                                                 <animations/>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="38%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tsF-Bk-hOb">
-                                                <rect key="frame" x="19" y="0.0" width="30" height="21"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PG-13" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7vR-yE-Wcv">
+                                                <rect key="frame" x="99" y="1" width="47" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <animations/>
-                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="10"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fresh-16.png" id="IBs-um-kxw" userLabel="Critic Rating">
-                                                <rect key="frame" x="44" y="2" width="16" height="16"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                                <animations/>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="72%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2dI-O6-GYL">
-                                                <rect key="frame" x="62" y="0.0" width="30" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="10"/>
+                                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="15"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <animations/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" id="M2Q-1l-9j3">
                                         <rect key="frame" x="8" y="15" width="359" height="56"/>
@@ -217,6 +250,8 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
+                        <outlet property="audienceRating" destination="aLI-UC-dfn" id="qek-f8-fkb"/>
+                        <outlet property="criticsRating" destination="D5i-tu-03s" id="CZQ-C4-6ff"/>
                         <outlet property="dragHandle" destination="MlP-vr-I8b" id="YPq-Gt-35g"/>
                         <outlet property="imageView" destination="sjq-e2-3U8" id="VIC-j7-umr"/>
                         <outlet property="mpaaRatingLabel" destination="7vR-yE-Wcv" id="SOR-hK-CGt"/>
@@ -413,11 +448,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Fresh-16.png" width="32" height="32"/>
+        <image name="Spilled-16.png" width="32" height="32"/>
         <image name="alert-32.png" width="32" height="32"/>
         <image name="box-office-24.png" width="24" height="24"/>
         <image name="dvd-24.png" width="24" height="24"/>
-        <image name="fresh-16.png" width="32" height="32"/>
-        <image name="rotten-16.png" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="46D-3U-1vI"/>

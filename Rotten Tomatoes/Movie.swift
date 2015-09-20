@@ -9,6 +9,8 @@
 import Foundation
 
 class Movie {
+  typealias Payload = NSDictionary
+
   struct Rating {
     enum Rating: String {
       case Rotten = "Rotten"
@@ -18,11 +20,11 @@ class Movie {
       case Spilled = "Spilled"
     }
 
-    let rating: Rating
-    let score: Int
+    let rating: Rating?
+    let score: Int?
   }
 
-  private let data: NSDictionary
+  private let payload: Payload
 
   let title: String
   let synopsis: String
@@ -33,13 +35,13 @@ class Movie {
   var posterImageThumbnail: UIImage?
 
   let mpaaRating: String
-//  let audienceRating: Rating
-//  let criticRating: Rating
+  let audienceRating: Rating
+  let criticsRating: Rating
 
   private let lowResRequest: NSURLRequest
   private let highResRequest: NSURLRequest
 
-  static func convertPostertImageUrlToHighResVersion(url: String) -> String {
+  private class func convertPostertImageUrlToHighResVersion(url: String) -> String {
     if let range = url.rangeOfString(".*cloudfront8?.net/", options: .RegularExpressionSearch) {
       return url.stringByReplacingCharactersInRange(
         range,
@@ -50,40 +52,53 @@ class Movie {
     }
   }
 
-  convenience init(data: NSDictionary) {
-    let title    = data["title"] as! String
-    let synopsis = data["synopsis"] as! String
+  convenience init(payload: Payload) {
+    let title    = payload["title"] as! String
+    let synopsis = payload["synopsis"] as! String
 
-    let lowResUrl  = data.valueForKeyPath("posters.thumbnail") as! String
+    let lowResUrl  = payload.valueForKeyPath("posters.thumbnail") as! String
     let highResUrl = Movie.convertPostertImageUrlToHighResVersion(lowResUrl)
 
-    let mpaaRating = data["mpaa_rating"] as! String
-//    let audienceRating = Rating(rating: Rating.Rating.fromRaw(data["]
+    let mpaaRating = payload["mpaa_rating"] as! String
 
     self.init(
-      data: data,
+      payload: payload,
       title: title,
       synopsis: synopsis,
       posterImageUrl: (NSURL(string: highResUrl)!),
       posterImageThumbnailUrl: (NSURL(string: lowResUrl)!),
-      mpaaRating: mpaaRating
+      mpaaRating: mpaaRating,
+      audienceRating: Movie.ratingFromPayload(payload, by: "audience"),
+      criticsRating: Movie.ratingFromPayload(payload, by: "critics")
+    )
+  }
+
+  private class func ratingFromPayload(payload: Payload, by: String) -> Rating {
+    let ratingName = payload.valueForKeyPath("ratings.\(by)_rating") as? String
+    return Rating(
+      rating: ratingName.flatMap { Rating.Rating(rawValue: $0) },
+      score: payload.valueForKeyPath("ratings.\(by)_score") as? Int
     )
   }
 
   init(
-    data: NSDictionary,
+    payload: Payload,
     title: String,
     synopsis: String,
     posterImageUrl: NSURL,
     posterImageThumbnailUrl: NSURL,
-    mpaaRating: String
+    mpaaRating: String,
+    audienceRating: Rating,
+    criticsRating: Rating
   ) {
-    self.data           = data
-    self.title          = title
-    self.synopsis       = synopsis
-    self.posterImageUrl = posterImageUrl
+    self.payload           = payload
+    self.title             = title
+    self.synopsis          = synopsis
+    self.posterImageUrl    = posterImageUrl
     self.posterImageThumbnailUrl = posterImageThumbnailUrl
-    self.mpaaRating = mpaaRating
+    self.mpaaRating        = mpaaRating
+    self.audienceRating    = audienceRating
+    self.criticsRating     = criticsRating
 
     self.lowResRequest  = RequestFactory.mkRequest(posterImageThumbnailUrl)
     self.highResRequest = RequestFactory.mkRequest(posterImageUrl)
@@ -108,21 +123,16 @@ class Movie {
     }
   }
 
-  // For debugging
-  var id: Int {
-    return unsafeAddressOf(self).hashValue
-  }
-
   private func loadLowResPosterImage(imageView: UIImageView) {
     imageView.setImageWithURLRequest(lowResRequest,
       placeholderImage: nil,
       success: { (request, response, lowResPlaceHolderImage) in
-        print("'' Success (lo-res): '\(self.title)' [\(self.id)]")
+        print("'' Success (lo-res): '\(self.title)'")
         self.posterImageThumbnail = lowResPlaceHolderImage
         self.loadHighResPosterImage(imageView, placeHolder: lowResPlaceHolderImage)
       },
       failure: { (request, response, _) in
-        print("** Failure (lo-res): '\(self.title)' [\(self.id)]")
+        print("** Failure (lo-res): '\(self.title)'")
       }
     )
   }
@@ -136,10 +146,10 @@ class Movie {
         self.crossDisolveImageViewSwap(imageView) {
           imageView.image = highResImage
         }
-        print("''' Success (hi-res): '\(self.title)' [\(self.id)]")
+        print("''' Success (hi-res): '\(self.title)'")
       },
       failure: { (request, response, _) in
-        print("*** Failure (hi-res): '\(self.title)' [\(self.id)]")
+        print("*** Failure (hi-res): '\(self.title)'")
     })
   }
 

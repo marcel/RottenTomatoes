@@ -47,7 +47,7 @@ class RottenTomatoesClient {
     return payload.flatMap { json in
       (json[moviesJsonKey] as? [NSDictionary]).map { moviesJson in
         moviesJson.map { movieJson in
-          Movie(data: movieJson)
+          Movie(payload: movieJson)
         }
       }
     }
@@ -57,21 +57,26 @@ class RottenTomatoesClient {
 // Decorator around a RottenTomatoesClient that simulates new results being returned
 // by the API
 class RefreshSimulatingRottenTomatoesClient: RottenTomatoesClient {
+  typealias CLASS = RefreshSimulatingRottenTomatoesClient
+
   let underlying: RottenTomatoesClient
   init(_ underlying: RottenTomatoesClient) {
     self.underlying = underlying
   }
 
-  static let extraMovie: Movie = {
-    let filePath   = NSBundle.mainBundle().pathForResource("extra-movie", ofType: "json")!
+  private class func loadExtraMovieFromFile(fileName: String) -> Movie {
+    let filePath   = NSBundle.mainBundle().pathForResource(fileName, ofType: "json")!
     let data       = NSData(contentsOfFile: filePath)!
     let dictionary = try! NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary
-    return Movie(data: dictionary)
-  }()
+    return Movie(payload: dictionary)
+  }
+
+  private static let extraMovie =
+    CLASS.loadExtraMovieFromFile("extra-movie")
 
   override func payloadToMovies(payload: NSDictionary?) -> [Movie]? {
     return underlying.payloadToMovies(payload).map { originalResults in
-      [RefreshSimulatingRottenTomatoesClient.extraMovie] + originalResults
+      [CLASS.extraMovie] + originalResults
     }
   }
 }

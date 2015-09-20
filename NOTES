@@ -1,2 +1,2 @@
 - It wasn't clear which operations had to be explicitly performed in the main thread and which didn't. Not performing some on the main thread resulted in strange UI races. Is there an objective function on when it is necessary and when it isn't? Perhaps this is the answer, "Remember – you must always access UIKit classes on the main thread!".
-
+- How to set borders on views from interface builder. To layout container boxes with borders in interface builder do you really have to set a bunch of User Defined Runtime Attributes for every view?

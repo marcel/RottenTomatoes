@@ -17,6 +17,8 @@ class MoviesDetailViewController: UIViewController {
   @IBOutlet weak var textContainerView: UIView!
   @IBOutlet weak var dragHandle: UILabel!
   @IBOutlet weak var mpaaRatingLabel: UILabel!
+  @IBOutlet weak var criticsRating: RatingView!
+  @IBOutlet weak var audienceRating: RatingView!
 
   var movie: Movie!
 
@@ -35,8 +37,9 @@ class MoviesDetailViewController: UIViewController {
     titleLabel.text      = movie.title
     synopsisText.text    = movie.synopsis
     mpaaRatingLabel.text = movie.mpaaRating
-
-    print("detail view: loading image into view: \(movie.posterImage)")
+    mpaaRatingLabel.sizeToFit()
+    criticsRating.populateFromRating(movie.criticsRating)
+    audienceRating.populateFromRating(movie.audienceRating)
     movie.loadPosterImageIntoView(imageView)
 
     minTextContainerViewY = textContainerView.frame.origin.y
