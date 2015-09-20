@@ -22,7 +22,6 @@ class Movie {
     let score: Int
   }
 
-  private var posterImageLoadingSemaphore = dispatch_semaphore_create(1)
   private let data: NSDictionary
 
   let title: String
@@ -89,19 +88,14 @@ class Movie {
     self.lowResRequest  = RequestFactory.mkRequest(posterImageThumbnailUrl)
     self.highResRequest = RequestFactory.mkRequest(posterImageUrl)
   }
-  }
 
   func loadPosterImageIntoView(imageView: UIImageView) {
     print("loadPosterImageIntoView: '\(title)'")
     if let posterImage = posterImage {
       print("Image already set: '\(title)'")
       imageView.image = posterImage
-
     } else {
       print("Loading image for '\(title)' from network")
-      if let thumbnail = posterImageThumbnail {
-        imageView.image = thumbnail
-      }
       loadPosterImageIntoViewFromNetwork(imageView)
     }
   }
@@ -114,6 +108,11 @@ class Movie {
     }
   }
 
+  // For debugging
+  var id: Int {
+    return unsafeAddressOf(self).hashValue
+  }
+
   private func loadLowResPosterImage(imageView: UIImageView) {
     imageView.setImageWithURLRequest(lowResRequest,
       placeholderImage: nil,
@@ -124,7 +123,6 @@ class Movie {
       },
       failure: { (request, response, _) in
         print("** Failure (lo-res): '\(self.title)' [\(self.id)]")
-        dispatch_semaphore_signal(self.posterImageLoadingSemaphore)
       }
     )
   }
@@ -149,7 +147,7 @@ class Movie {
     dispatch_async(dispatch_get_main_queue()) {
       UIView.transitionWithView(imageView,
         duration: 3,
-        options: UIViewAnimationOptions.TransitionCrossDissolve,
+        options: [.TransitionCrossDissolve, .AllowUserInteraction],
         animations: animation,
         completion: nil
       )
