@@ -109,6 +109,7 @@ class MoviesViewController: UIViewController,
 
   func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
     let urlBeforeTabSelection = movieRepository.urlToLoad
+    
     movieRepository.urlToLoad = urlForSelectedTabBar()
     if urlBeforeTabSelection != movieRepository.urlToLoad {
       print("Switching to \(movieRepository.urlToLoad)")
@@ -117,12 +118,22 @@ class MoviesViewController: UIViewController,
         presentLoadingProgress()
       }
 
-      UIView.easeIn({
-        self.movieRepository.loadMovies() {
-          self.reloadTable()
-          self.dismissLoadingProgress()
-        }
-      })
+      let selectedBarItemIsOnLeft = tabBar.items!.indexOf(item)! == 0
+
+      let animationDirection = selectedBarItemIsOnLeft ?
+        UIViewAnimationOptions.TransitionFlipFromLeft  :
+        UIViewAnimationOptions.TransitionFlipFromRight
+
+      movieRepository.loadMovies() {
+        UIView.transitionWithView(
+          self.tableView,
+          duration: 0.5,
+          options: [animationDirection, .AllowAnimatedContent],
+          animations: { self.reloadTable() },
+          completion: nil
+        )
+        self.dismissLoadingProgress()
+      }
     }
   }
 
@@ -269,12 +280,10 @@ class MoviesViewController: UIViewController,
   func onRefresh() {
     movieRepository.simulatingNewResults() {
       if NetworkReachability.isConnectedToNetwork() {
-        UIView.easeIn({
-          self.movieRepository.loadMovies() {
-            self.reloadTable()
-            self.refreshControl.endRefreshing()
-          }
-        })
+        self.movieRepository.loadMovies() {
+          self.reloadTable()
+          self.refreshControl.endRefreshing()
+        }
       } else {
         self.refreshControl.endRefreshing()
         self.performSegueWithIdentifier(
