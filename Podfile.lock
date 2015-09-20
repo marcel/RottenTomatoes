@@ -1,4 +1,7 @@
 PODS:
+  - AFNetworkActivityLogger (2.0.4):
+    - AFNetworking/NSURLConnection (~> 2.0)
+    - AFNetworking/NSURLSession (~> 2.0)
   - AFNetworking (2.6.0):
     - AFNetworking/NSURLConnection (= 2.6.0)
     - AFNetworking/NSURLSession (= 2.6.0)
@@ -23,10 +26,12 @@ PODS:
   - KVNProgress (2.2.1)
 
 DEPENDENCIES:
+  - AFNetworkActivityLogger
   - AFNetworking
   - KVNProgress
 
 SPEC CHECKSUMS:
+  AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   KVNProgress: 7001d2d16a2755cee5599e8e485befe056f2197b
 

@@ -8,8 +8,6 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class MoviesGridViewController: UICollectionViewController {
   var movieRepository: MovieRepository!
   
@@ -42,7 +40,6 @@ class MoviesGridViewController: UICollectionViewController {
     return 1
   }
 
-
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return movieRepository.movies.count
   }
@@ -62,7 +59,6 @@ class MoviesGridViewController: UICollectionViewController {
 
     let movie = movieAtIndexPath(indexPath)
     cell.populatedFromMovie(movie)
-//    collectionView.reloadItemsAtIndexPaths([indexPath])
     return cell
   }
 

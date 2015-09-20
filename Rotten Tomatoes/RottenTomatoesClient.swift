@@ -11,7 +11,7 @@ import Foundation
 class RottenTomatoesClient {
   typealias ResponseHandler = [Movie]? -> Void
 
-  static let moviesJsonKey = "movies"
+  private let moviesJsonKey = "movies"
 
   enum ApiUrl: String {
     case BoxOffice = "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json"
@@ -43,9 +43,9 @@ class RottenTomatoesClient {
     }.resume()
   }
 
-  func payloadToMovies(payload: NSDictionary?) -> [Movie]? {
+  private func payloadToMovies(payload: NSDictionary?) -> [Movie]? {
     return payload.flatMap { json in
-      (json[RottenTomatoesClient.moviesJsonKey] as? [NSDictionary]).map { moviesJson in
+      (json[moviesJsonKey] as? [NSDictionary]).map { moviesJson in
         moviesJson.map { movieJson in
           Movie(data: movieJson)
         }

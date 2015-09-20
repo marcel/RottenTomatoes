@@ -20,8 +20,8 @@ class MoviesDetailViewController: UIViewController {
 
   var movie: Movie!
 
-  var minTextContainerViewY: CGFloat!
-  var maxTextContainerViewY: CGFloat! {
+  private var minTextContainerViewY: CGFloat!
+  private var maxTextContainerViewY: CGFloat! {
     return minTextContainerViewY +
       textContainerView.frame.height -
       dragHandle.frame.height
@@ -42,34 +42,28 @@ class MoviesDetailViewController: UIViewController {
     minTextContainerViewY = textContainerView.frame.origin.y
   }
 
-  func max(lhs: CGFloat, _ rhs: CGFloat) -> CGFloat {
-    return lhs > rhs ? lhs : rhs
-  }
-
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
   }
 
   @IBAction func toggleText(sender: AnyObject) {
-    let containerFrame        = textContainerView.frame
-    let textContainerMidpoint = minTextContainerViewY + (containerFrame.height / 2)
+    let containerFrame = textContainerView.frame
+    let maxY = maxTextContainerViewY
+    let minY = minTextContainerViewY
+
+    let textContainerMidpoint = minY + (containerFrame.height / 2)
+    let rectOffset = { yOffset in
+      CGRectOffset(containerFrame, 0, yOffset)
+    }
 
     UIView.easeIn({
       // It's below the half way point so toggle up
       if containerFrame.origin.y > textContainerMidpoint {
-        self.textContainerView.frame = CGRectOffset(
-          containerFrame,
-          0,
-          -(containerFrame.origin.y - self.minTextContainerViewY)
-        )
+        self.textContainerView.frame = rectOffset(-(containerFrame.origin.y - minY))
         self.navigationController?.navigationBar.alpha = 1
       // It's above the half way point so toggle down
       } else {
-        self.textContainerView.frame = CGRectOffset(
-          containerFrame,
-          0,
-          +(self.maxTextContainerViewY - containerFrame.origin.y)
-        )
+        self.textContainerView.frame = rectOffset(maxY - containerFrame.origin.y)
         self.navigationController?.navigationBar.alpha = 0
       }
     })
@@ -79,8 +73,9 @@ class MoviesDetailViewController: UIViewController {
     let translation = recognizer.translationInView(view)
 
     let yAfterTranslation = textContainerView.frame.origin.y + translation.y
+    let moveIsWithinMinMaxBounds = yAfterTranslation <= maxTextContainerViewY && yAfterTranslation >= minTextContainerViewY
 
-    if yAfterTranslation <= maxTextContainerViewY && yAfterTranslation >= minTextContainerViewY {
+    if moveIsWithinMinMaxBounds {
       UIView.animateWithDuration(
         0.5,
         delay: 0,
@@ -90,7 +85,8 @@ class MoviesDetailViewController: UIViewController {
         animations: {
           self.textContainerView.frame = CGRectOffset(self.textContainerView.frame, 0, translation.y)
           recognizer.setTranslation(CGPointZero, inView: self.view)
-        }, completion: { b in () }
+        },
+        completion: nil
       )
     }
   }

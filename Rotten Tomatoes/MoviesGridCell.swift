@@ -15,12 +15,7 @@ class MoviesGridCell: UICollectionViewCell {
   @IBOutlet weak var titleLabel: UILabel!
 
   func populatedFromMovie(movie: Movie) -> MoviesGridCell {
-    print("MoviesGridCell.posterImage: \(posterImage)")
-    if let image = movie.posterImage {
-      posterImage.image = image
-    } else {
-      posterImage.setImageWithURL(movie.posterImageUrl)
-    }
+    movie.loadPosterImageIntoView(posterImage)
     titleLabel.text = movie.title
 
     return self

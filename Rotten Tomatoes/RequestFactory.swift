@@ -10,7 +10,7 @@ import Foundation
 
 class RequestFactory {
   static let cachePolicy = NSURLRequestCachePolicy.ReturnCacheDataElseLoad
-  static let timeoutInterval: NSTimeInterval = 30
+  static let timeoutInterval: NSTimeInterval = 60
 
   static func mkRequest(url: NSURL) -> NSURLRequest {
     return NSURLRequest(

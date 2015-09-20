@@ -29,13 +29,10 @@ class MovieCell: UITableViewCell {
   }
 
   func populatedFromMovie(movie: Movie) -> MovieCell {
-    print("populatedFromMovie: '\(movie.title)'")
-
     titleLabel.text    = movie.title
     synopsisLabel.text = movie.synopsis
-    print("About to load image: '\(movie.title)'")
+    print("Delegating to movie from cell to load image: '\(movie.title)'")
     movie.loadPosterImageIntoView(posterView)
-    print("Image loading started: '\(movie.title)'")
     return self
   }
 }

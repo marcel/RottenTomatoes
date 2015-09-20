@@ -71,7 +71,7 @@ class MovieRepository {
     shouldSimulateRefresh = false
   }
 
-  func moviesMatchingSearchQuery(movies: [Movie], searchQuery: SearchQuery) -> [Movie] {
+  private func moviesMatchingSearchQuery(movies: [Movie], searchQuery: SearchQuery) -> [Movie] {
     return movies.filter { movie in
       let movieText = [movie.title, movie.synopsis]
 
