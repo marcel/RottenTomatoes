@@ -11,9 +11,17 @@ import UIKit
 class MoviesGridViewController: UICollectionViewController {
   var movieRepository: MovieRepository!
   
+  @IBOutlet weak var layoutSwitcherControl: UISegmentedControl!
+
   override func viewDidLoad() {
     super.viewDidLoad()
     print("viewDidLoad in MoviesGridViewController")
+    navigationItem.hidesBackButton = true
+  }
+
+  override func viewWillAppear(animated: Bool) {
+    navigationController?.navigationBarHidden = false
+    tabBarController?.hidesBottomBarWhenPushed = false
   }
 
   override func didReceiveMemoryWarning() {
@@ -22,7 +30,6 @@ class MoviesGridViewController: UICollectionViewController {
 
   // MARK: - Navigation
 
-  // In a storyboard-based application, you will often want to do a little preparation before navigation
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     print("Segueing from Grid View")
     let cell = sender as! UICollectionViewCell
@@ -33,6 +40,17 @@ class MoviesGridViewController: UICollectionViewController {
     let movieDetailsViewController   = segue.destinationViewController as! MoviesDetailViewController
     movieDetailsViewController.movie = movie
   }
+
+  @IBAction func switchBackToListView() {
+    print("switchBackToListView")
+    // TODO setting these segment indexes is a jank work around
+    layoutSwitcherControl.selectedSegmentIndex = 1
+    let currentIndex = (navigationController?.viewControllers.count)!
+    let listController = navigationController?.viewControllers[currentIndex-2] as! MoviesViewController
+    listController.layoutSwitcherControl.selectedSegmentIndex = 0
+    navigationController?.popViewControllerAnimated(true)
+  }
+
 
   // MARK: UICollectionViewDataSource
 
