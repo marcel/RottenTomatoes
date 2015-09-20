@@ -22,7 +22,7 @@ class Movie {
     let score: Int
   }
 
-  let data: NSDictionary
+  private let data: NSDictionary
 
   let title: String
   let synopsis: String
@@ -36,12 +36,18 @@ class Movie {
 //  let audienceRating: Rating
 //  let criticRating: Rating
 
-  var lowResRequest: NSURLRequest {
-    return RequestFactory.mkRequest(posterImageThumbnailUrl)
-  }
+  private let lowResRequest: NSURLRequest
+  private let highResRequest: NSURLRequest
 
-  var highResRequest: NSURLRequest {
-    return RequestFactory.mkRequest(posterImageUrl)
+  static func convertPostertImageUrlToHighResVersion(url: String) -> String {
+    if let range = url.rangeOfString(".*cloudfront8?.net/", options: .RegularExpressionSearch) {
+      return url.stringByReplacingCharactersInRange(
+        range,
+        withString: "https://content6.flixster.com/"
+      )
+    } else {
+      return url
+    }
   }
 
   convenience init(data: NSDictionary) {
@@ -49,7 +55,7 @@ class Movie {
     let synopsis = data["synopsis"] as! String
 
     let lowResUrl  = data.valueForKeyPath("posters.thumbnail") as! String
-    let highResUrl = Movie.convertPostertPostImageUrlToHighResVersion(lowResUrl)
+    let highResUrl = Movie.convertPostertImageUrlToHighResVersion(lowResUrl)
 
     let mpaaRating = data["mpaa_rating"] as! String
 //    let audienceRating = Rating(rating: Rating.Rating.fromRaw(data["]
@@ -78,6 +84,9 @@ class Movie {
     self.posterImageUrl = posterImageUrl
     self.posterImageThumbnailUrl = posterImageThumbnailUrl
     self.mpaaRating = mpaaRating
+
+    self.lowResRequest  = RequestFactory.mkRequest(posterImageThumbnailUrl)
+    self.highResRequest = RequestFactory.mkRequest(posterImageUrl)
   }
 
   func loadPosterImageIntoView(imageView: UIImageView) {
@@ -85,17 +94,13 @@ class Movie {
     if let posterImage = posterImage {
       print("Image already set: '\(title)'")
       imageView.image = posterImage
-
     } else {
       print("Loading image for '\(title)' from network")
-      if let thumbnail = posterImageThumbnail {
-        imageView.image = thumbnail
-      }
       loadPosterImageIntoViewFromNetwork(imageView)
     }
   }
 
-  func loadPosterImageIntoViewFromNetwork(imageView: UIImageView) {
+  private func loadPosterImageIntoViewFromNetwork(imageView: UIImageView) {
     if let placeholder = posterImageThumbnail {
       loadHighResPosterImage(imageView, placeHolder: placeholder)
     } else {
@@ -103,53 +108,49 @@ class Movie {
     }
   }
 
-  func loadLowResPosterImage(imageView: UIImageView) {
+  // For debugging
+  var id: Int {
+    return unsafeAddressOf(self).hashValue
+  }
+
+  private func loadLowResPosterImage(imageView: UIImageView) {
     imageView.setImageWithURLRequest(lowResRequest,
       placeholderImage: nil,
       success: { (request, response, lowResPlaceHolderImage) in
-        print("Success (lo-res): '\(self.title)'")
+        print("'' Success (lo-res): '\(self.title)' [\(self.id)]")
         self.posterImageThumbnail = lowResPlaceHolderImage
         self.loadHighResPosterImage(imageView, placeHolder: lowResPlaceHolderImage)
       },
       failure: { (request, response, _) in
-        print("Failure (lo-res): '\(self.title)'")
+        print("** Failure (lo-res): '\(self.title)' [\(self.id)]")
       }
     )
   }
 
-  func loadHighResPosterImage(imageView: UIImageView, placeHolder: UIImage) {
+  private func loadHighResPosterImage(imageView: UIImageView, placeHolder: UIImage) {
     imageView.setImageWithURLRequest(highResRequest,
       placeholderImage: placeHolder,
       success: { (request, response, highResImage) in
-        imageView.setNeedsDisplay()
         self.posterImage = highResImage
+
         self.crossDisolveImageViewSwap(imageView) {
           imageView.image = highResImage
         }
-        print("Success (hi-res): '\(self.title)'")
+        print("''' Success (hi-res): '\(self.title)' [\(self.id)]")
       },
       failure: { (request, response, _) in
-        print("Failure (hi-res): '\(self.title)'")
+        print("*** Failure (hi-res): '\(self.title)' [\(self.id)]")
     })
   }
 
-  func crossDisolveImageViewSwap(imageView: UIImageView, animation: () -> ()) {
-    UIView.transitionWithView(imageView,
-      duration: 3,
-      options: UIViewAnimationOptions.TransitionCrossDissolve,
-      animations: animation,
-      completion: nil
-    )
-  }
-
-  static func convertPostertPostImageUrlToHighResVersion(url: String) -> String {
-    if let range = url.rangeOfString(".*cloudfront8?.net/", options: .RegularExpressionSearch) {
-      return url.stringByReplacingCharactersInRange(
-        range,
-        withString: "https://content6.flixster.com/"
+  private func crossDisolveImageViewSwap(imageView: UIImageView, animation: () -> ()) {
+    dispatch_async(dispatch_get_main_queue()) {
+      UIView.transitionWithView(imageView,
+        duration: 3,
+        options: [.TransitionCrossDissolve, .AllowUserInteraction],
+        animations: animation,
+        completion: nil
       )
-    } else {
-      return url
     }
   }
 }

@@ -310,10 +310,14 @@
                             </segments>
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
+                                <action selector="switchBackToListView" destination="PXD-vg-G1V" eventType="valueChanged" id="PcG-3q-OI8"/>
                                 <action selector="switchLayout:" destination="BYZ-38-t0r" eventType="valueChanged" id="bsD-HT-QbS"/>
                             </connections>
                         </segmentedControl>
                     </navigationItem>
+                    <connections>
+                        <outlet property="layoutSwitcherControl" destination="AZd-jx-Pq3" id="1NH-bD-jJK"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X1k-Lf-11a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -416,6 +420,6 @@
         <image name="rotten-16.png" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="K1M-XZ-pHC"/>
+        <segue reference="46D-3U-1vI"/>
     </inferredMetricsTieBreakers>
 </document>
