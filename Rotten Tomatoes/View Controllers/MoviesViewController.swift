@@ -14,6 +14,10 @@ class MoviesViewController: UIViewController,
   UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate,
   UITabBarDelegate {
 
+  typealias MovieSortDescriptor = MovieRepository.SortDescriptor
+
+  // MARK: - Enums
+
   enum Segue: String {
     case MoviesDetail
     case DropDownAlert
@@ -26,12 +30,20 @@ class MoviesViewController: UIViewController,
     RottenTomatoesClient.ApiUrl.BoxOffice, RottenTomatoesClient.ApiUrl.DVD
   ]
 
+  let sortDescriptorsMappedToSortControl = [
+    MovieSortDescriptor.ReleaseDate, MovieSortDescriptor.Title, MovieSortDescriptor.Rating
+  ]
+
   var movieRepository: MovieRepository!
   var searchController: UISearchController!
   var refreshControl: UIRefreshControl!
 
   // MARK: - Outlets
 
+  @IBOutlet weak var sortControlContainer: UIView!
+  @IBOutlet weak var sortButton: UIBarButtonItem!
+  @IBOutlet weak var sortControlView: UIView!
+  @IBOutlet weak var sortControl: UISegmentedControl!
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var tabBar: UITabBar!
   @IBOutlet weak var layoutSwitcherControl: UISegmentedControl!
@@ -43,10 +55,36 @@ class MoviesViewController: UIViewController,
     performSegueWithIdentifier(Segue.ListViewToGridView.rawValue, sender: self)
   }
 
+  @IBAction func toggleSortControl() {
+    print("toggleSortControl")
+
+    sortButton.enabled = false
+    let header = tableView.tableHeaderView!
+    if sortControlContainer.alpha == 0 {
+      header.bringSubviewToFront(sortControlContainer)
+      UIView.easeIn({
+        self.sortControlContainer.alpha = 1
+      },
+        completion: { _ in
+          self.sortButton.enabled = true
+        }
+      )
+    } else {
+      UIView.easeOut({
+        self.sortControlContainer.alpha = 0
+      },
+        completion: { _ in
+          self.sortButton.enabled = true
+          header.sendSubviewToBack(self.sortControlContainer)
+      })
+    }
+  }
+
   // MARK: - View Life Cycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    prepareSortControl()
     prepareRefreshControl()
     prepareSearchController()
     prepareTabBar()
@@ -91,6 +129,10 @@ class MoviesViewController: UIViewController,
       withObject: "Loading...",
       waitUntilDone: false
     )
+  }
+
+  func prepareSortControl() {
+    sortControlContainer.alpha = 0
   }
 
   func dismissLoadingProgress() {
@@ -158,7 +200,6 @@ class MoviesViewController: UIViewController,
   func movieAtIndexPath(indexPath: NSIndexPath) -> Movie {
     return movieRepository.moviesFor(urlForSelectedTabBar())[indexPath.row]
   }
-
 
   func cellAtIndexPath(indexPath: NSIndexPath) -> MovieCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(
@@ -250,6 +291,16 @@ class MoviesViewController: UIViewController,
     searchController.active = false
   }
 
+  // MARK: - Sorting
+
+  @IBAction func updateSorting() {
+    let selectedSortDescriptor = sortDescriptorsMappedToSortControl[sortControl.selectedSegmentIndex]
+    print("Sort descriptor changed to \(selectedSortDescriptor)")
+
+    movieRepository.sortDescriptor = selectedSortDescriptor
+    reloadTable()
+  }
+
   // TODO: 
   // - When pushing into detail view make search bar disappear but preserve search results
   // MARK: - UISearchController
@@ -263,8 +314,9 @@ class MoviesViewController: UIViewController,
     searchController.searchResultsUpdater = self
     searchController.searchBar.sizeToFit()
 
-    tableView.tableHeaderView = searchController.searchBar
-    tableView.contentOffset   = CGPointMake(0, CGRectGetHeight(searchController.searchBar.frame))
+    tableView.tableHeaderView?.addSubview(searchController.searchBar)
+
+    tableView.contentOffset = CGPointMake(0, -CGRectGetHeight(searchController.searchBar.frame))
   }
 
   // MARK: - UIRefreshControl
@@ -278,21 +330,6 @@ class MoviesViewController: UIViewController,
     )
 
     tableView.insertSubview(refreshControl, atIndex: 0)
-    // N.B. Must be invoked after the refreshControl has been inserted
-    insertConsistantBackgroundColorView()
-  }
-
-  // N.B. This is a work around to deal with the default mix of grey and white
-  // in the background when pulling down on the refresh control. This keeps the background
-  // against which the refresh control is displayed a single uniform color.
-  func insertConsistantBackgroundColorView() {
-    var backgroundViewFrame = tableView.bounds
-    backgroundViewFrame.origin.y = -backgroundViewFrame.size.height
-
-    let backgroundColorView = UIView(frame: backgroundViewFrame)
-    backgroundColorView.backgroundColor = tableView.backgroundColor
-
-    tableView.insertSubview(backgroundColorView, atIndex: 0)
   }
 
   func onRefresh() {

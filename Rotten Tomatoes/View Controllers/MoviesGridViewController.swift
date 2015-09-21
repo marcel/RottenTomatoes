@@ -54,16 +54,16 @@ class MoviesGridViewController: UICollectionViewController {
   }
 
   private func scrollListViewToCurrentPosition(tableView: UITableView) {
-    if let visibleItems = collectionView?.indexPathsForVisibleItems() {
-      let indexPathForMiddleVisibleItem = visibleItems[visibleItems.count/2]
+    if let visibleItems = collectionView?.indexPathsForVisibleItems(), first = visibleItems.first {
+      let scrollTo = first.row == 0 ? first : visibleItems[visibleItems.count/2]
+
       tableView.scrollToRowAtIndexPath(
-        indexPathForMiddleVisibleItem,
+        scrollTo,
         atScrollPosition: UITableViewScrollPosition.Middle,
         animated: false
       )
     }
   }
-
 
   // MARK: UICollectionViewDataSource
 

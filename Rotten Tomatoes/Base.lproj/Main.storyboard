@@ -12,14 +12,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="129" sectionHeaderHeight="28" sectionFooterHeight="28" id="Tst-UZ-nnD">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                            <tabBar contentMode="scaleToFill" barStyle="black" id="fOU-hb-SzP">
+                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <animations/>
+                                <items>
+                                    <tabBarItem title="Box Office" image="box-office-24.png" id="kzf-gM-OmW"/>
+                                    <tabBarItem title="DVD" image="dvd-24.png" id="pJv-OT-3aa"/>
+                                </items>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="P3W-Ot-tJu"/>
+                                </connections>
+                            </tabBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="129" sectionHeaderHeight="28" sectionFooterHeight="28" id="Tst-UZ-nnD">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableHeaderView" opaque="NO" contentMode="scaleToFill" id="JB2-9n-JNc" userLabel="Header">
+                                    <rect key="frame" x="0.0" y="64" width="375" height="29"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" id="rtk-0l-GPY" userLabel="Sort Control Container">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                            <subviews>
+                                                <segmentedControl contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Mbm-i8-5Lq">
+                                                    <rect key="frame" x="65" y="8" width="245" height="29"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <animations/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <segments>
+                                                        <segment title="" image="release-date-16.png"/>
+                                                        <segment title="" image="alphabetical-16.png"/>
+                                                        <segment title="" image="rating-32.png"/>
+                                                    </segments>
+                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <connections>
+                                                        <action selector="updateSorting" destination="BYZ-38-t0r" eventType="valueChanged" id="pYt-Gb-ILg"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <animations/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </subviews>
+                                    <animations/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="129" id="fk6-Lm-dLJ" customClass="MovieCell" customModule="Rotten_Tomatoes" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="375" height="129"/>
+                                        <rect key="frame" x="0.0" y="121" width="375" height="129"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fk6-Lm-dLJ" id="e2g-ol-WBx">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="128"/>
@@ -59,19 +104,6 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <tabBar contentMode="scaleToFill" barStyle="black" id="fOU-hb-SzP">
-                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <animations/>
-                                <items>
-                                    <tabBarItem title="Box Office" image="box-office-24.png" id="kzf-gM-OmW"/>
-                                    <tabBarItem title="DVD" image="dvd-24.png" id="pJv-OT-3aa"/>
-                                </items>
-                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="P3W-Ot-tJu"/>
-                                </connections>
-                            </tabBar>
                         </subviews>
                         <animations/>
                     </view>
@@ -90,11 +122,21 @@
                                 <action selector="switchLayout:" destination="BYZ-38-t0r" eventType="valueChanged" id="aqS-5G-IU7"/>
                             </connections>
                         </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" image="sort-16.png" style="plain" id="o2E-PY-UYR">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="toggleSortControl" destination="BYZ-38-t0r" id="39m-nx-oir"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="layoutSwitcherControl" destination="Nyu-br-SPM" id="hXa-tm-7i6"/>
+                        <outlet property="sortButton" destination="o2E-PY-UYR" id="vIZ-Cx-pbj"/>
+                        <outlet property="sortControl" destination="Mbm-i8-5Lq" id="kf9-Lp-n9U"/>
+                        <outlet property="sortControlContainer" destination="rtk-0l-GPY" id="bRO-FD-N4W"/>
+                        <outlet property="sortControlView" destination="JB2-9n-JNc" id="cxC-Vn-s7f"/>
                         <outlet property="tabBar" destination="fOU-hb-SzP" id="HAg-qt-j6l"/>
                         <outlet property="tableView" destination="Tst-UZ-nnD" id="1z9-Tn-aiV"/>
                         <segue destination="hvS-17-e9X" kind="custom" identifier="DropDownAlert" customClass="DropDownAlertSegue" customModule="Rotten_Tomatoes" customModuleProvider="target" id="YoE-sQ-9Js"/>
@@ -178,7 +220,7 @@
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <connections>
                                                             <outlet property="ratingImage" destination="IBs-um-kxw" id="qWh-uc-ncT"/>
-                                                            <outlet property="score" destination="s0o-D4-x3o" id="C6e-9s-8St"/>
+                                                            <outlet property="score" destination="2dI-O6-GYL" id="ihH-85-dGP"/>
                                                         </connections>
                                                     </view>
                                                     <view contentMode="scaleToFill" id="aLI-UC-dfn" userLabel="Audience Rating" customClass="RatingView" customModule="Rotten_Tomatoes" customModuleProvider="target">
@@ -194,7 +236,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Spilled-16.png" id="Yow-tL-58U" userLabel="Rating Image">
-                                                                <rect key="frame" x="0.0" y="3" width="16" height="16"/>
+                                                                <rect key="frame" x="0.0" y="3" width="12" height="18"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                                 <animations/>
                                                             </imageView>
@@ -203,7 +245,7 @@
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <connections>
                                                             <outlet property="ratingImage" destination="Yow-tL-58U" id="7pi-y2-NR7"/>
-                                                            <outlet property="score" destination="2dI-O6-GYL" id="B0v-eF-998"/>
+                                                            <outlet property="score" destination="s0o-D4-x3o" id="UQn-cN-DNp"/>
                                                         </connections>
                                                     </view>
                                                 </subviews>
@@ -251,7 +293,7 @@
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="audienceRating" destination="aLI-UC-dfn" id="qek-f8-fkb"/>
-                        <outlet property="criticsRating" destination="D5i-tu-03s" id="CZQ-C4-6ff"/>
+                        <outlet property="criticsRating" destination="D5i-tu-03s" id="BQn-cw-mdW"/>
                         <outlet property="dragHandle" destination="MlP-vr-I8b" id="YPq-Gt-35g"/>
                         <outlet property="imageView" destination="sjq-e2-3U8" id="VIC-j7-umr"/>
                         <outlet property="mpaaRatingLabel" destination="7vR-yE-Wcv" id="SOR-hK-CGt"/>
@@ -451,8 +493,12 @@
         <image name="Fresh-16.png" width="32" height="32"/>
         <image name="Spilled-16.png" width="32" height="32"/>
         <image name="alert-32.png" width="32" height="32"/>
+        <image name="alphabetical-16.png" width="16" height="16"/>
         <image name="box-office-24.png" width="24" height="24"/>
         <image name="dvd-24.png" width="24" height="24"/>
+        <image name="rating-32.png" width="32" height="32"/>
+        <image name="release-date-16.png" width="16" height="16"/>
+        <image name="sort-16.png" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="46D-3U-1vI"/>

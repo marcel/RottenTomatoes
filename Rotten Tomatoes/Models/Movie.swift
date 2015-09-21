@@ -38,6 +38,7 @@ class Movie {
   let audienceRating: Rating
   let criticsRating: Rating
 
+  let releaseDate: NSDate
   private let lowResRequest: NSURLRequest
   private let highResRequest: NSURLRequest
 
@@ -69,8 +70,18 @@ class Movie {
       posterImageThumbnailUrl: (NSURL(string: lowResUrl)!),
       mpaaRating: mpaaRating,
       audienceRating: Movie.ratingFromPayload(payload, by: "audience"),
-      criticsRating: Movie.ratingFromPayload(payload, by: "critics")
+      criticsRating: Movie.ratingFromPayload(payload, by: "critics"),
+      releaseDate: Movie.releaseDateFromPayload(payload)!
     )
+  }
+
+  private class func releaseDateFromPayload(payload: Payload) -> NSDate? {
+    let dateString = payload.valueForKeyPath("release_dates.theater") as! String
+
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+
+    return dateFormatter.dateFromString(dateString)
   }
 
   private class func ratingFromPayload(payload: Payload, by: String) -> Rating {
@@ -89,7 +100,8 @@ class Movie {
     posterImageThumbnailUrl: NSURL,
     mpaaRating: String,
     audienceRating: Rating,
-    criticsRating: Rating
+    criticsRating: Rating,
+    releaseDate: NSDate
   ) {
     self.payload           = payload
     self.title             = title
@@ -99,6 +111,7 @@ class Movie {
     self.mpaaRating        = mpaaRating
     self.audienceRating    = audienceRating
     self.criticsRating     = criticsRating
+    self.releaseDate       = releaseDate
 
     self.lowResRequest  = RequestFactory.mkRequest(posterImageThumbnailUrl)
     self.highResRequest = RequestFactory.mkRequest(posterImageUrl)
