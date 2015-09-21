@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Encapsulates caching policy and timeout configuration for network requests
 class RequestFactory {
   static let cachePolicy = NSURLRequestCachePolicy.ReturnCacheDataElseLoad
   static let timeoutInterval: NSTimeInterval = 60

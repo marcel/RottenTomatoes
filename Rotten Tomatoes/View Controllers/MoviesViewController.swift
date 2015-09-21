@@ -16,7 +16,7 @@ class MoviesViewController: UIViewController,
 
   typealias MovieSortDescriptor = MovieRepository.SortDescriptor
 
-  // MARK: - Enums
+  // MARK: Enums
 
   enum Segue: String {
     case MoviesDetail
@@ -131,15 +131,15 @@ class MoviesViewController: UIViewController,
     )
   }
 
-  func prepareSortControl() {
-    sortControlContainer.alpha = 0
-  }
-
   func dismissLoadingProgress() {
     KVNProgress.performSelectorOnMainThread("dismiss",
       withObject: nil,
       waitUntilDone: false
     )
+  }
+
+  func prepareSortControl() {
+    sortControlContainer.alpha = 0
   }
 
   override func didReceiveMemoryWarning() {
@@ -248,7 +248,6 @@ class MoviesViewController: UIViewController,
       prepareDropDownAlertSegue(segue)
     case Segue.ListViewToGridView.rawValue:
       prepareLayoutSwitchSegue(segue)
-      print("Going from list view to grid view")
     default:
       ()
     }
@@ -272,9 +271,15 @@ class MoviesViewController: UIViewController,
   }
 
   func prepareLayoutSwitchSegue(segue: UIStoryboardSegue) {
+    print("Going from list view to grid view")
+
     let gridViewController = segue.destinationViewController as! MoviesGridViewController
     gridViewController.movies = movieRepository.moviesFor(urlForSelectedTabBar())
 
+    updateGridViewToCurrentScrollPosition(gridViewController)
+  }
+
+  func updateGridViewToCurrentScrollPosition(gridViewController: MoviesGridViewController) {
     if let visibleRows = tableView.indexPathsForVisibleRows {
       if visibleRows.first?.row != 0 {
         let indexPathForMiddleVisibleRow = visibleRows[visibleRows.count/2]
@@ -301,10 +306,12 @@ class MoviesViewController: UIViewController,
     reloadTable()
   }
 
-  // TODO: 
-  // - When pushing into detail view make search bar disappear but preserve search results
+
   // MARK: - UISearchController
 
+  // TODO:
+  // - When pushing into detail view make search bar disappear but preserve search results
+  
   private func prepareSearchController() {
     searchController = UISearchController(searchResultsController: nil)
     searchController.searchResultsUpdater = self
