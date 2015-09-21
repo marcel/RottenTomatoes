@@ -8,9 +8,12 @@
 
 import Foundation
 
+// Wraps Movie data returned from the RottenTomatoesClient
 class Movie {
+  // MARK: Typealiases
   typealias Payload = NSDictionary
 
+  // MARK: Enums
   struct Rating {
     enum Rating: String {
       case Rotten = "Rotten"
@@ -24,7 +27,7 @@ class Movie {
     let score: Int?
   }
 
-  private let payload: Payload
+  // MARK: - Properties
 
   let title: String
   let synopsis: String
@@ -39,19 +42,12 @@ class Movie {
   let criticsRating: Rating
 
   let releaseDate: NSDate
+
   private let lowResRequest: NSURLRequest
   private let highResRequest: NSURLRequest
+  private let payload: Payload
 
-  private class func convertPostertImageUrlToHighResVersion(url: String) -> String {
-    if let range = url.rangeOfString(".*cloudfront8?.net/", options: .RegularExpressionSearch) {
-      return url.stringByReplacingCharactersInRange(
-        range,
-        withString: "https://content6.flixster.com/"
-      )
-    } else {
-      return url
-    }
-  }
+  // MARK: - Initializers
 
   convenience init(payload: Payload) {
     let title    = payload["title"] as! String
@@ -72,23 +68,6 @@ class Movie {
       audienceRating: Movie.ratingFromPayload(payload, by: "audience"),
       criticsRating: Movie.ratingFromPayload(payload, by: "critics"),
       releaseDate: Movie.releaseDateFromPayload(payload)!
-    )
-  }
-
-  private class func releaseDateFromPayload(payload: Payload) -> NSDate? {
-    let dateString = payload.valueForKeyPath("release_dates.theater") as! String
-
-    let dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-
-    return dateFormatter.dateFromString(dateString)
-  }
-
-  private class func ratingFromPayload(payload: Payload, by: String) -> Rating {
-    let ratingName = payload.valueForKeyPath("ratings.\(by)_rating") as? String
-    return Rating(
-      rating: ratingName.flatMap { Rating.Rating(rawValue: $0) },
-      score: payload.valueForKeyPath("ratings.\(by)_score") as? Int
     )
   }
 
@@ -116,6 +95,36 @@ class Movie {
     self.lowResRequest  = RequestFactory.mkRequest(posterImageThumbnailUrl)
     self.highResRequest = RequestFactory.mkRequest(posterImageUrl)
   }
+
+  private class func releaseDateFromPayload(payload: Payload) -> NSDate? {
+    let dateString = payload.valueForKeyPath("release_dates.theater") as! String
+
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+
+    return dateFormatter.dateFromString(dateString)
+  }
+
+  private class func ratingFromPayload(payload: Payload, by: String) -> Rating {
+    let ratingName = payload.valueForKeyPath("ratings.\(by)_rating") as? String
+    return Rating(
+      rating: ratingName.flatMap { Rating.Rating(rawValue: $0) },
+      score: payload.valueForKeyPath("ratings.\(by)_score") as? Int
+    )
+  }
+
+  private class func convertPostertImageUrlToHighResVersion(url: String) -> String {
+    if let range = url.rangeOfString(".*cloudfront8?.net/", options: .RegularExpressionSearch) {
+      return url.stringByReplacingCharactersInRange(
+        range,
+        withString: "https://content6.flixster.com/"
+      )
+    } else {
+      return url
+    }
+  }
+
+  // MARK: - Asynchronous poster image loading
 
   func loadPosterImageIntoView(imageView: UIImageView) {
     print("loadPosterImageIntoView: '\(title)'")

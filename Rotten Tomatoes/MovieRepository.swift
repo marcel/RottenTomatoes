@@ -8,21 +8,34 @@
 
 import Foundation
 
+// Encapsulates access to movies returned by the RottenTomatoesClient.
+//
+// Provides:
+// - Access to list of movies by endpoint (Box Office & DVD)
+// - Sorting by release date, title or rating
+// - Disjunction title and synposis search
 class MovieRepository {
+  // MARK: Typealiases
   typealias Callback = () -> ()
   typealias SearchQuery = [String]
   typealias ApiUrl = RottenTomatoesClient.ApiUrl
   typealias SortingPredicate = (Movie, Movie) -> Bool
 
+  // MARK: Enums
   enum SortDescriptor {
     case ReleaseDate
     case Title
     case Rating
   }
 
+  // MARK: - Properties
+
   var movies = Dictionary<ApiUrl, [Movie]>()
+  var searchQuery: SearchQuery?
 
   private var _client: RottenTomatoesClient!
+
+  // MARK: - Initializers
 
   init(client: RottenTomatoesClient) {
     self._client = client
@@ -32,7 +45,43 @@ class MovieRepository {
     self.init(client: RottenTomatoesClient())
   }
 
-  var searchQuery: SearchQuery?
+  // MARK: - Public Interface
+
+  func moviesFor(url: ApiUrl) -> [Movie] {
+    return movies[url].map { moviesForUrl in
+      searchQuery.map { queries in
+        moviesMatchingSearchQuery(moviesForUrl, searchQuery: queries)
+        } ?? moviesForUrl
+      } ?? []
+  }
+
+  func loadMovies(url: ApiUrl, onCompletion: Callback? = nil) {
+    if hasLoadedUrl(url) {
+      onCompletion?()
+    } else {
+      client.load(url) { movies in
+        self.movies[url] = movies ?? []
+        onCompletion?()
+      }
+    }
+  }
+
+  func hasLoadedUrl(url: ApiUrl) -> Bool {
+    return movies[url] != nil
+  }
+
+  private var client: RottenTomatoesClient {
+    get {
+      if shouldSimulateRefresh {
+        return RefreshSimulatingRottenTomatoesClient(_client)
+      } else {
+        return _client
+      }
+    }
+  }
+
+  // MARK: - Sorting
+
   var sortDescriptor: SortDescriptor {
     get { return _sortDescriptor }
     
@@ -41,6 +90,8 @@ class MovieRepository {
       updateSorting()
     }
   }
+
+  private var _sortDescriptor = SortDescriptor.ReleaseDate
 
   private func updateSorting() {
     let predicate = sortingPredicates(sortDescriptor)
@@ -62,42 +113,9 @@ class MovieRepository {
     }
   }
 
-  private var _sortDescriptor = SortDescriptor.ReleaseDate
+  // MARK: - Refresh simulation
 
   private var shouldSimulateRefresh = false
-
-  func moviesFor(url: ApiUrl) -> [Movie] {
-    return movies[url].map { moviesForUrl in
-      searchQuery.map { queries in
-        moviesMatchingSearchQuery(moviesForUrl, searchQuery: queries)
-        } ?? moviesForUrl
-      } ?? []
-  }
-
-  private var client: RottenTomatoesClient {
-    get {
-      if shouldSimulateRefresh {
-        return RefreshSimulatingRottenTomatoesClient(_client)
-      } else {
-        return _client
-      }
-    }
-  }
-
-  func loadMovies(url: ApiUrl, onCompletion: Callback? = nil) {
-    if hasLoadedUrl(url) {
-      onCompletion?()
-    } else {
-      client.load(url) { movies in
-        self.movies[url] = movies ?? []
-        onCompletion?()
-      }
-    }
-  }
-
-  func hasLoadedUrl(url: ApiUrl) -> Bool {
-    return movies[url] != nil
-  }
 
   func simulatingNewResults(url: ApiUrl, callback: Callback) {
     shouldSimulateRefresh = true
@@ -105,6 +123,8 @@ class MovieRepository {
     callback()
     shouldSimulateRefresh = false
   }
+
+  // MARK: - Search
 
   private func moviesMatchingSearchQuery(movies: [Movie], searchQuery: SearchQuery) -> [Movie] {
     return movies.filter { movie in

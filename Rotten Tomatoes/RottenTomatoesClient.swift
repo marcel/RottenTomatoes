@@ -8,6 +8,8 @@
 
 import Foundation
 
+// Requests (fake) Box Office and DVD endpoints returning an
+// array of Movie objects parsed from json
 class RottenTomatoesClient {
   typealias ResponseHandler = [Movie]? -> Void
 
