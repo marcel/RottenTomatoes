@@ -27,6 +27,9 @@ Time spent: ~60
 ### Walkthrough
 ![Video Walkthrough](RottenTomatoesDemo.gif)
 
+#### WIP w/ sorting and scroll position preservation
+![Video Walkthrough](RottenTomatoesDemoWithSortingAndScrollPositionPreservation.gif)
+
 Credits
 ---------
 * [Rotten Tomatoes API](http://developer.rottentomatoes.com/docs/read/JSON)

@@ -44,6 +44,7 @@
 		1F8939861BAFA92A0029CC71 /* alphabetical-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F8939841BAFA92A0029CC71 /* alphabetical-16.png */; settings = {ASSET_TAGS = (); }; };
 		1F8939881BAFA98D0029CC71 /* rating-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F8939871BAFA98D0029CC71 /* rating-32.png */; settings = {ASSET_TAGS = (); }; };
 		1F89398A1BAFB3F60029CC71 /* sort-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F8939891BAFB3F60029CC71 /* sort-16.png */; settings = {ASSET_TAGS = (); }; };
+		1F89398C1BAFCE780029CC71 /* grid-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F89398B1BAFCE780029CC71 /* grid-16.png */; settings = {ASSET_TAGS = (); }; };
 		1F94C1C71BAA1FBF00107DC8 /* MoviesDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F94C1C61BAA1FBF00107DC8 /* MoviesDetailViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		1F94C1CC1BAA38F100107DC8 /* RottenTomatoesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F94C1CB1BAA38F100107DC8 /* RottenTomatoesClient.swift */; settings = {ASSET_TAGS = (); }; };
 		1F94C1D01BAA56B800107DC8 /* list-icon-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F94C1CF1BAA56B800107DC8 /* list-icon-16.png */; settings = {ASSET_TAGS = (); }; };
@@ -91,6 +92,7 @@
 		1F8939841BAFA92A0029CC71 /* alphabetical-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alphabetical-16.png"; sourceTree = "<group>"; };
 		1F8939871BAFA98D0029CC71 /* rating-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating-32.png"; sourceTree = "<group>"; };
 		1F8939891BAFB3F60029CC71 /* sort-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-16.png"; sourceTree = "<group>"; };
+		1F89398B1BAFCE780029CC71 /* grid-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grid-16.png"; path = "../../../Desktop/grid-16.png"; sourceTree = "<group>"; };
 		1F94C1C31BAA17E200107DC8 /* Rotten Tomatoes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rotten Tomatoes-Bridging-Header.h"; sourceTree = "<group>"; };
 		1F94C1C61BAA1FBF00107DC8 /* MoviesDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MoviesDetailViewController.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/View Controllers/MoviesDetailViewController.swift"; sourceTree = "<absolute>"; };
 		1F94C1CB1BAA38F100107DC8 /* RottenTomatoesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RottenTomatoesClient.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				1F0E0E3F1BAC9708007F609F /* Tab Bar */,
 				1F0E0E3E1BAC96EC007F609F /* Ratings */,
 				1F94C1CF1BAA56B800107DC8 /* list-icon-16.png */,
+				1F89398B1BAFCE780029CC71 /* grid-16.png */,
 				1F0E0E521BACBC24007F609F /* alert-32.png */,
 			);
 			name = Icons;
@@ -386,6 +389,7 @@
 				1F0E0E2D1BABFBE8007F609F /* Certified Fresh-16.png in Resources */,
 				1F89398A1BAFB3F60029CC71 /* sort-16.png in Resources */,
 				1F8939851BAFA92A0029CC71 /* rating-16.png in Resources */,
+				1F89398C1BAFCE780029CC71 /* grid-16.png in Resources */,
 				1F0E0E3C1BAC96D4007F609F /* Upright-16.png in Resources */,
 				1F0E0E2C1BABFBE8007F609F /* Fresh-16.png in Resources */,
 				1F94C1D01BAA56B800107DC8 /* list-icon-16.png in Resources */,
