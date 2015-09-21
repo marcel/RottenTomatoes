@@ -11,6 +11,7 @@ import Foundation
 class MovieRepository {
   typealias Callback = () -> ()
   typealias SearchQuery = [String]
+  typealias ApiUrl = RottenTomatoesClient.ApiUrl
 
   private var _client: RottenTomatoesClient!
 
@@ -23,28 +24,19 @@ class MovieRepository {
   }
 
   var searchQuery: SearchQuery?
-  var shouldSimulateRefresh = false
+  private var shouldSimulateRefresh = false
 
-  var movies: [Movie] {
-    get {
-      return _movies[urlToLoad].map { movies in
-        searchQuery.map { queries in
-          moviesMatchingSearchQuery(movies, searchQuery: queries)
-          } ?? movies
-        } ?? []
-    }
+  var movies = Dictionary<ApiUrl, [Movie]>()
 
-    set {
-      // TODO Succeptible to race condition if tab is changed before request is completed
-      _movies[urlToLoad] = newValue
-    }
+  func moviesFor(url: ApiUrl) -> [Movie] {
+    return movies[url].map { moviesForUrl in
+      searchQuery.map { queries in
+        moviesMatchingSearchQuery(moviesForUrl, searchQuery: queries)
+        } ?? moviesForUrl
+      } ?? []
   }
 
-  private var _movies = Dictionary<RottenTomatoesClient.ApiUrl, [Movie]>()
-
-  var urlToLoad: RottenTomatoesClient.ApiUrl!
-
-  var client: RottenTomatoesClient {
+  private var client: RottenTomatoesClient {
     get {
       if shouldSimulateRefresh {
         return RefreshSimulatingRottenTomatoesClient(_client)
@@ -54,25 +46,24 @@ class MovieRepository {
     }
   }
 
-  func loadMovies(onCompletion: Callback? = nil) {
-    if hasLoadedUrl() {
+  func loadMovies(url: ApiUrl, onCompletion: Callback? = nil) {
+    if hasLoadedUrl(url) {
       onCompletion?()
     } else {
-      client.load(urlToLoad) { movies in
-        self.movies = movies ?? []
+      client.load(url) { movies in
+        self.movies[url] = movies ?? []
         onCompletion?()
       }
     }
   }
 
-  func hasLoadedUrl() -> Bool {
-    print("_movies[urlToLoad]: ", _movies[urlToLoad])
-    return _movies[urlToLoad] != nil
+  func hasLoadedUrl(url: ApiUrl) -> Bool {
+    return movies[url] != nil
   }
 
-  func simulatingNewResults(callback: Callback) {
+  func simulatingNewResults(url: ApiUrl, callback: Callback) {
     shouldSimulateRefresh = true
-    _movies.removeValueForKey(urlToLoad)
+    movies.removeValueForKey(url)
     callback()
     shouldSimulateRefresh = false
   }

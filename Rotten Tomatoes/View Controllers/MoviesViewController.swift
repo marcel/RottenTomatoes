@@ -54,14 +54,13 @@ class MoviesViewController: UIViewController,
     presentLoadingProgress()
 
     movieRepository = MovieRepository()
-    movieRepository.urlToLoad = urlForSelectedTabBar()
 
     tableView.dataSource = self
     tableView.delegate   = self
 
     print("Network reachable? \(NetworkReachability.isConnectedToNetwork())")
     if NetworkReachability.isConnectedToNetwork() {
-      movieRepository.loadMovies() {
+      movieRepository.loadMovies(urlForSelectedTabBar()) {
         self.dismissLoadingProgress()
         self.reloadTable()
       }
@@ -113,37 +112,33 @@ class MoviesViewController: UIViewController,
   }
 
   func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-    let urlBeforeTabSelection = movieRepository.urlToLoad
-    
-    movieRepository.urlToLoad = urlForSelectedTabBar()
-    if urlBeforeTabSelection != movieRepository.urlToLoad {
-      print("Switching to \(movieRepository.urlToLoad)")
+    let urlToLoad = urlForSelectedTabBar()
+    print("Switching to \(urlToLoad)")
 
-      let isFirstTimeLoadingTab = !movieRepository.hasLoadedUrl()
+    let isFirstTimeLoadingTab = !movieRepository.hasLoadedUrl(urlToLoad)
 
+    if isFirstTimeLoadingTab {
+      presentLoadingProgress()
+    }
+
+    let selectedBarItemIsOnLeft = tabBar.items!.indexOf(item)! == 0
+
+    let animationDirection = selectedBarItemIsOnLeft ?
+      UIViewAnimationOptions.TransitionFlipFromLeft  :
+      UIViewAnimationOptions.TransitionFlipFromRight
+
+    movieRepository.loadMovies(urlToLoad) {
       if isFirstTimeLoadingTab {
-        presentLoadingProgress()
-      }
-
-      let selectedBarItemIsOnLeft = tabBar.items!.indexOf(item)! == 0
-
-      let animationDirection = selectedBarItemIsOnLeft ?
-        UIViewAnimationOptions.TransitionFlipFromLeft  :
-        UIViewAnimationOptions.TransitionFlipFromRight
-
-      movieRepository.loadMovies() {
-        if isFirstTimeLoadingTab {
-          self.dismissLoadingProgress()
-          self.reloadTable()
-        } else {
-          UIView.transitionWithView(
-            self.tableView,
-            duration: 0.5,
-            options: [animationDirection, .AllowAnimatedContent],
-            animations: { self.reloadTable() },
-            completion: nil
-          )
-        }
+        self.dismissLoadingProgress()
+        self.reloadTable()
+      } else {
+        UIView.transitionWithView(
+          self.tableView,
+          duration: 0.5,
+          options: [animationDirection, .AllowAnimatedContent],
+          animations: { self.reloadTable() },
+          completion: nil
+        )
       }
     }
   }
@@ -155,13 +150,13 @@ class MoviesViewController: UIViewController,
   // MARK: - UITableViewDataSource
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return movieRepository.movies.count
+    return movieRepository.moviesFor(urlForSelectedTabBar()).count
   }
 
   // TODO This could cause an index out of bounds error if something wonky
   // happens
   func movieAtIndexPath(indexPath: NSIndexPath) -> Movie {
-    return movieRepository.movies[indexPath.row]
+    return movieRepository.moviesFor(urlForSelectedTabBar())[indexPath.row]
   }
 
 
@@ -237,7 +232,18 @@ class MoviesViewController: UIViewController,
 
   func prepareLayoutSwitchSegue(segue: UIStoryboardSegue) {
     let gridViewController = segue.destinationViewController as! MoviesGridViewController
-    gridViewController.movieRepository = movieRepository
+    gridViewController.movies = movieRepository.moviesFor(urlForSelectedTabBar())
+
+    if let visibleRows = tableView.indexPathsForVisibleRows {
+      if visibleRows.first?.row != 0 {
+        let indexPathForMiddleVisibleRow = visibleRows[visibleRows.count/2]
+        gridViewController.collectionView?.scrollToItemAtIndexPath(
+          indexPathForMiddleVisibleRow,
+          atScrollPosition: UICollectionViewScrollPosition.CenteredVertically,
+          animated: false
+        )
+      }
+    }
   }
 
   func cleanUpViewBeforeSegue() {
@@ -290,9 +296,10 @@ class MoviesViewController: UIViewController,
   }
 
   func onRefresh() {
-    movieRepository.simulatingNewResults() {
+    let urlToLoad = urlForSelectedTabBar()
+    movieRepository.simulatingNewResults(urlToLoad) {
       if NetworkReachability.isConnectedToNetwork() {
-        self.movieRepository.loadMovies() {
+        self.movieRepository.loadMovies(urlToLoad) {
           self.reloadTable()
           self.refreshControl.endRefreshing()
         }

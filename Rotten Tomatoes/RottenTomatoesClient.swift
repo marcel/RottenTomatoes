@@ -22,7 +22,7 @@ class RottenTomatoesClient {
     request(NSURL(string: url.rawValue)!, responseHandler: responseHandler)
   }
 
-  func request(url: NSURL, responseHandler: ResponseHandler) {
+  private func request(url: NSURL, responseHandler: ResponseHandler) {
     let request = NSURLRequest(URL: url)
     let config  = NSURLSessionConfiguration.defaultSessionConfiguration()
     let session = NSURLSession(configuration: config)
@@ -74,7 +74,7 @@ class RefreshSimulatingRottenTomatoesClient: RottenTomatoesClient {
   private static let extraMovie =
     CLASS.loadExtraMovieFromFile("extra-movie")
 
-  override func payloadToMovies(payload: NSDictionary?) -> [Movie]? {
+  override private func payloadToMovies(payload: NSDictionary?) -> [Movie]? {
     return underlying.payloadToMovies(payload).map { originalResults in
       [CLASS.extraMovie] + originalResults
     }

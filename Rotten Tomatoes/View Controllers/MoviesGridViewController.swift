@@ -9,7 +9,7 @@
 import UIKit
 
 class MoviesGridViewController: UICollectionViewController {
-  var movieRepository: MovieRepository!
+  var movies: [Movie]!
   
   @IBOutlet weak var layoutSwitcherControl: UISegmentedControl!
 
@@ -48,7 +48,20 @@ class MoviesGridViewController: UICollectionViewController {
     let currentIndex = (navigationController?.viewControllers.count)!
     let listController = navigationController?.viewControllers[currentIndex-2] as! MoviesViewController
     listController.layoutSwitcherControl.selectedSegmentIndex = 0
+
+    scrollListViewToCurrentPosition(listController.tableView)
     navigationController?.popViewControllerAnimated(true)
+  }
+
+  private func scrollListViewToCurrentPosition(tableView: UITableView) {
+    if let visibleItems = collectionView?.indexPathsForVisibleItems() {
+      let indexPathForMiddleVisibleItem = visibleItems[visibleItems.count/2]
+      tableView.scrollToRowAtIndexPath(
+        indexPathForMiddleVisibleItem,
+        atScrollPosition: UITableViewScrollPosition.Middle,
+        animated: false
+      )
+    }
   }
 
 
@@ -59,7 +72,7 @@ class MoviesGridViewController: UICollectionViewController {
   }
 
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return movieRepository.movies.count
+    return movies.count
   }
 
   func cellAtIndexPath(collectionView: UICollectionView, indexPath: NSIndexPath) -> MoviesGridCell {
@@ -81,7 +94,7 @@ class MoviesGridViewController: UICollectionViewController {
   }
 
   func movieAtIndexPath(indexPath: NSIndexPath) -> Movie {
-    return movieRepository.movies[indexPath.row]
+    return movies[indexPath.row]
   }
 
   // MARK: UICollectionViewDelegate
