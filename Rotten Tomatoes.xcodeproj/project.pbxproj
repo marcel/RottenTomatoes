@@ -63,24 +63,24 @@
 		1F0E0E391BAC1577007F609F /* box-office-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "box-office-24.png"; path = "Rotten Tomatoes/Assets/Icons/box-office-24.png"; sourceTree = SOURCE_ROOT; };
 		1F0E0E3B1BAC96D4007F609F /* Upright-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Upright-16.png"; path = "Rotten Tomatoes/Assets/Icons/Upright-16.png"; sourceTree = SOURCE_ROOT; };
 		1F0E0E401BAC977B007F609F /* Spilled-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Spilled-16.png"; path = "Rotten Tomatoes/Assets/Icons/Spilled-16.png"; sourceTree = SOURCE_ROOT; };
-		1F0E0E421BAC97FA007F609F /* DropDownAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownAlertViewController.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/View Controllers/DropDownAlertViewController.swift"; sourceTree = "<absolute>"; };
-		1F0E0E471BAC9835007F609F /* DropDownAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownAlertView.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Views/DropDownAlertView.swift"; sourceTree = "<absolute>"; };
+		1F0E0E421BAC97FA007F609F /* DropDownAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownAlertViewController.swift; sourceTree = "<group>"; };
+		1F0E0E471BAC9835007F609F /* DropDownAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownAlertView.swift; sourceTree = "<group>"; };
 		1F0E0E521BACBC24007F609F /* alert-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "alert-32.png"; path = "Rotten Tomatoes/Assets/Icons/alert-32.png"; sourceTree = SOURCE_ROOT; };
-		1F0E0E571BACD4CB007F609F /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIView.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Extensions/UIView.swift"; sourceTree = "<absolute>"; };
+		1F0E0E571BACD4CB007F609F /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIView.swift; path = Extensions/UIView.swift; sourceTree = "<group>"; };
 		1F0E0E591BACE08B007F609F /* MovieRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
-		1F0E0E5B1BACEA6A007F609F /* MoviesGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MoviesGridViewController.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/View Controllers/MoviesGridViewController.swift"; sourceTree = "<absolute>"; };
+		1F0E0E5B1BACEA6A007F609F /* MoviesGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesGridViewController.swift; sourceTree = "<group>"; };
 		1F0E0E5F1BACEB4D007F609F /* rtlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rtlogo.png; path = "Rotten Tomatoes/Assets/Icons/rtlogo.png"; sourceTree = SOURCE_ROOT; };
-		1F0E0E611BAD01E6007F609F /* MoviesGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MoviesGridCell.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Views/MoviesGridCell.swift"; sourceTree = "<absolute>"; };
+		1F0E0E611BAD01E6007F609F /* MoviesGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesGridCell.swift; sourceTree = "<group>"; };
 		1F6896F11BA9FBB20003423B /* Rotten Tomatoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rotten Tomatoes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F6896F41BA9FBB20003423B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/AppDelegate.swift"; sourceTree = "<absolute>"; };
+		1F6896F41BA9FBB20003423B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F6896F91BA9FBB20003423B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1F6896FB1BA9FBB20003423B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F6896FE1BA9FBB20003423B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F6897001BA9FBB20003423B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1F6897061BAA014F0003423B /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MoviesViewController.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/View Controllers/MoviesViewController.swift"; sourceTree = "<absolute>"; };
-		1F68970C1BAA103C0003423B /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieCell.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Views/MovieCell.swift"; sourceTree = "<absolute>"; };
-		1F8391E81BAB6EA70038B80F /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Array.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Extensions/Array.swift"; sourceTree = "<absolute>"; };
-		1F89396A1BAEA2A10029CC71 /* RatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RatingView.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Views/RatingView.swift"; sourceTree = "<absolute>"; };
+		1F6897061BAA014F0003423B /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
+		1F68970C1BAA103C0003423B /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		1F8391E81BAB6EA70038B80F /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Array.swift; path = Extensions/Array.swift; sourceTree = "<group>"; };
+		1F89396A1BAEA2A10029CC71 /* RatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		1F89396C1BAEC10C0029CC71 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		1F89396E1BAEC1370029CC71 /* DropDownAlertSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownAlertSegue.swift; sourceTree = "<group>"; };
 		1F8939741BAEC1BC0029CC71 /* NetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 		1F8939891BAFB3F60029CC71 /* sort-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-16.png"; sourceTree = "<group>"; };
 		1F89398B1BAFCE780029CC71 /* grid-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grid-16.png"; path = "../../../Desktop/grid-16.png"; sourceTree = "<group>"; };
 		1F94C1C31BAA17E200107DC8 /* Rotten Tomatoes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rotten Tomatoes-Bridging-Header.h"; sourceTree = "<group>"; };
-		1F94C1C61BAA1FBF00107DC8 /* MoviesDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MoviesDetailViewController.swift; path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/View Controllers/MoviesDetailViewController.swift"; sourceTree = "<absolute>"; };
+		1F94C1C61BAA1FBF00107DC8 /* MoviesDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesDetailViewController.swift; sourceTree = "<group>"; };
 		1F94C1CB1BAA38F100107DC8 /* RottenTomatoesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RottenTomatoesClient.swift; sourceTree = "<group>"; };
 		1F94C1CF1BAA56B800107DC8 /* list-icon-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "list-icon-16.png"; path = "Rotten Tomatoes/Assets/Icons/list-icon-16.png"; sourceTree = SOURCE_ROOT; };
 		46660EC37BF51B762C90B327 /* Pods-Rotten Tomatoes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rotten Tomatoes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rotten Tomatoes/Pods-Rotten Tomatoes.debug.xcconfig"; sourceTree = "<group>"; };
@@ -154,9 +154,8 @@
 				1F8939741BAEC1BC0029CC71 /* NetworkReachability.swift */,
 				1F8939751BAEC1BC0029CC71 /* RequestFactory.swift */,
 			);
-			name = Networking;
-			path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Networking";
-			sourceTree = "<absolute>";
+			path = Networking;
+			sourceTree = "<group>";
 		};
 		1F0E0E5E1BACEAC5007F609F /* StoryBoards */ = {
 			isa = PBXGroup;
@@ -172,9 +171,8 @@
 			children = (
 				1F8939781BAEC1E80029CC71 /* Synchronizer.swift */,
 			);
-			name = Utilities;
-			path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Utilities";
-			sourceTree = "<absolute>";
+			path = Utilities;
+			sourceTree = "<group>";
 		};
 		1F6896E81BA9FBB20003423B = {
 			isa = PBXGroup;
@@ -274,9 +272,8 @@
 			children = (
 				1F89396C1BAEC10C0029CC71 /* Movie.swift */,
 			);
-			name = Models;
-			path = "/Users/marcel/Xcode/Rotten Tomatoes/Rotten Tomatoes/Models";
-			sourceTree = "<absolute>";
+			path = Models;
+			sourceTree = "<group>";
 		};
 		1F94C1CD1BAA4F7D00107DC8 /* Assets */ = {
 			isa = PBXGroup;
