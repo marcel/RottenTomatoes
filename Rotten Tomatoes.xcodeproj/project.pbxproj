@@ -44,7 +44,6 @@
 		1F8939861BAFA92A0029CC71 /* alphabetical-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F8939841BAFA92A0029CC71 /* alphabetical-16.png */; settings = {ASSET_TAGS = (); }; };
 		1F8939881BAFA98D0029CC71 /* rating-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F8939871BAFA98D0029CC71 /* rating-32.png */; settings = {ASSET_TAGS = (); }; };
 		1F89398A1BAFB3F60029CC71 /* sort-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F8939891BAFB3F60029CC71 /* sort-16.png */; settings = {ASSET_TAGS = (); }; };
-		1F89398C1BAFCE780029CC71 /* grid-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F89398B1BAFCE780029CC71 /* grid-16.png */; settings = {ASSET_TAGS = (); }; };
 		1F94C1C71BAA1FBF00107DC8 /* MoviesDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F94C1C61BAA1FBF00107DC8 /* MoviesDetailViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		1F94C1CC1BAA38F100107DC8 /* RottenTomatoesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F94C1CB1BAA38F100107DC8 /* RottenTomatoesClient.swift */; settings = {ASSET_TAGS = (); }; };
 		1F94C1D01BAA56B800107DC8 /* list-icon-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F94C1CF1BAA56B800107DC8 /* list-icon-16.png */; settings = {ASSET_TAGS = (); }; };
@@ -63,12 +62,12 @@
 		1F0E0E391BAC1577007F609F /* box-office-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "box-office-24.png"; path = "Rotten Tomatoes/Assets/Icons/box-office-24.png"; sourceTree = SOURCE_ROOT; };
 		1F0E0E3B1BAC96D4007F609F /* Upright-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Upright-16.png"; path = "Rotten Tomatoes/Assets/Icons/Upright-16.png"; sourceTree = SOURCE_ROOT; };
 		1F0E0E401BAC977B007F609F /* Spilled-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Spilled-16.png"; path = "Rotten Tomatoes/Assets/Icons/Spilled-16.png"; sourceTree = SOURCE_ROOT; };
-		1F0E0E421BAC97FA007F609F /* DropDownAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownAlertViewController.swift; sourceTree = "<group>"; };
+		1F0E0E421BAC97FA007F609F /* DropDownAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DropDownAlertViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1F0E0E471BAC9835007F609F /* DropDownAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownAlertView.swift; sourceTree = "<group>"; };
 		1F0E0E521BACBC24007F609F /* alert-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "alert-32.png"; path = "Rotten Tomatoes/Assets/Icons/alert-32.png"; sourceTree = SOURCE_ROOT; };
 		1F0E0E571BACD4CB007F609F /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIView.swift; path = Extensions/UIView.swift; sourceTree = "<group>"; };
 		1F0E0E591BACE08B007F609F /* MovieRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
-		1F0E0E5B1BACEA6A007F609F /* MoviesGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesGridViewController.swift; sourceTree = "<group>"; };
+		1F0E0E5B1BACEA6A007F609F /* MoviesGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MoviesGridViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1F0E0E5F1BACEB4D007F609F /* rtlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rtlogo.png; path = "Rotten Tomatoes/Assets/Icons/rtlogo.png"; sourceTree = SOURCE_ROOT; };
 		1F0E0E611BAD01E6007F609F /* MoviesGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesGridCell.swift; sourceTree = "<group>"; };
 		1F6896F11BA9FBB20003423B /* Rotten Tomatoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rotten Tomatoes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,12 +76,12 @@
 		1F6896FB1BA9FBB20003423B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F6896FE1BA9FBB20003423B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F6897001BA9FBB20003423B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1F6897061BAA014F0003423B /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
-		1F68970C1BAA103C0003423B /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		1F6897061BAA014F0003423B /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MoviesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		1F68970C1BAA103C0003423B /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MovieCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1F8391E81BAB6EA70038B80F /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Array.swift; path = Extensions/Array.swift; sourceTree = "<group>"; };
 		1F89396A1BAEA2A10029CC71 /* RatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
-		1F89396C1BAEC10C0029CC71 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
-		1F89396E1BAEC1370029CC71 /* DropDownAlertSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownAlertSegue.swift; sourceTree = "<group>"; };
+		1F89396C1BAEC10C0029CC71 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Movie.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		1F89396E1BAEC1370029CC71 /* DropDownAlertSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DropDownAlertSegue.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1F8939741BAEC1BC0029CC71 /* NetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 		1F8939751BAEC1BC0029CC71 /* RequestFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
 		1F8939781BAEC1E80029CC71 /* Synchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronizer.swift; sourceTree = "<group>"; };
@@ -92,10 +91,9 @@
 		1F8939841BAFA92A0029CC71 /* alphabetical-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alphabetical-16.png"; sourceTree = "<group>"; };
 		1F8939871BAFA98D0029CC71 /* rating-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rating-32.png"; sourceTree = "<group>"; };
 		1F8939891BAFB3F60029CC71 /* sort-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-16.png"; sourceTree = "<group>"; };
-		1F89398B1BAFCE780029CC71 /* grid-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grid-16.png"; path = "../../../Desktop/grid-16.png"; sourceTree = "<group>"; };
 		1F94C1C31BAA17E200107DC8 /* Rotten Tomatoes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rotten Tomatoes-Bridging-Header.h"; sourceTree = "<group>"; };
 		1F94C1C61BAA1FBF00107DC8 /* MoviesDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesDetailViewController.swift; sourceTree = "<group>"; };
-		1F94C1CB1BAA38F100107DC8 /* RottenTomatoesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RottenTomatoesClient.swift; sourceTree = "<group>"; };
+		1F94C1CB1BAA38F100107DC8 /* RottenTomatoesClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RottenTomatoesClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1F94C1CF1BAA56B800107DC8 /* list-icon-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "list-icon-16.png"; path = "Rotten Tomatoes/Assets/Icons/list-icon-16.png"; sourceTree = SOURCE_ROOT; };
 		46660EC37BF51B762C90B327 /* Pods-Rotten Tomatoes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rotten Tomatoes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rotten Tomatoes/Pods-Rotten Tomatoes.debug.xcconfig"; sourceTree = "<group>"; };
 		B7373BAA8C1B62E07BD64483 /* Pods_Rotten_Tomatoes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rotten_Tomatoes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -291,7 +289,6 @@
 				1F0E0E3F1BAC9708007F609F /* Tab Bar */,
 				1F0E0E3E1BAC96EC007F609F /* Ratings */,
 				1F94C1CF1BAA56B800107DC8 /* list-icon-16.png */,
-				1F89398B1BAFCE780029CC71 /* grid-16.png */,
 				1F0E0E521BACBC24007F609F /* alert-32.png */,
 			);
 			name = Icons;
@@ -386,7 +383,6 @@
 				1F0E0E2D1BABFBE8007F609F /* Certified Fresh-16.png in Resources */,
 				1F89398A1BAFB3F60029CC71 /* sort-16.png in Resources */,
 				1F8939851BAFA92A0029CC71 /* rating-16.png in Resources */,
-				1F89398C1BAFCE780029CC71 /* grid-16.png in Resources */,
 				1F0E0E3C1BAC96D4007F609F /* Upright-16.png in Resources */,
 				1F0E0E2C1BABFBE8007F609F /* Fresh-16.png in Resources */,
 				1F94C1D01BAA56B800107DC8 /* list-icon-16.png in Resources */,
